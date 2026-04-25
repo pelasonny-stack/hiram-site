@@ -14,8 +14,17 @@ export function Footer() {
         {/* Row A — display section */}
         <div className="grid items-end gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <div className="font-mono uppercase text-display-massive text-foreground select-none leading-none">
-              HIRAM
+            <div className="wordmark font-mono uppercase text-display-massive text-foreground select-none leading-none cursor-default inline-flex items-baseline">
+              {"HIRAM".split("").map((c, i) => (
+                <span
+                  key={i}
+                  className="wordmark-letter"
+                  style={{ transitionDelay: `${i * 50}ms` }}
+                >
+                  {c}
+                </span>
+              ))}
+              <span className="blink-cursor ml-2" aria-hidden />
             </div>
             <p className="mt-4 text-sm text-foreground-muted max-w-[40ch]">
               {t("tagline")}

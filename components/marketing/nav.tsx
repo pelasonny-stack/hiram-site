@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 import { LocaleSwitcher } from "./locale-switcher";
+import { CommandHint } from "./command-hint";
+import { ScrollProgressLine } from "./scroll-progress-line";
 import { cn } from "@/lib/utils";
 
 const NAV_KEYS = ["capabilities", "caseStudies", "demo", "about"] as const;
@@ -34,15 +36,17 @@ export function Nav() {
   React.useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 h-16 transition-[background,border] duration-200",
-        scrolled
-          ? "border-b border-border bg-background/70 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent",
-      )}
-    >
-      <div className="container-shell flex h-full items-center justify-between gap-6">
+    <>
+      <ScrollProgressLine />
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 h-16 transition-[background,border] duration-200",
+          scrolled
+            ? "border-b border-border bg-background/70 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent",
+        )}
+      >
+        <div className="container-shell flex h-full items-center justify-between gap-6">
         <Logo />
         <nav className="hidden items-center gap-7 md:flex">
           {NAV_KEYS.map((key) => {
@@ -65,6 +69,7 @@ export function Nav() {
           })}
         </nav>
         <div className="flex items-center gap-2">
+          <CommandHint />
           <LocaleSwitcher />
           <ThemeToggle />
           <Button asChild size="sm" className="hidden md:inline-flex">
@@ -82,26 +87,27 @@ export function Nav() {
         </div>
       </div>
       {open && (
-        <div className="border-b border-border bg-background md:hidden">
-          <div className="container-shell flex flex-col gap-1 py-4">
-            {NAV_KEYS.map((key) => (
+          <div className="border-b border-border bg-background md:hidden">
+            <div className="container-shell flex flex-col gap-1 py-4">
+              {NAV_KEYS.map((key) => (
+                <Link
+                  key={key}
+                  href={HREFS[key]}
+                  className="rounded-md px-3 py-2 text-sm text-foreground-muted hover:bg-background-elev hover:text-foreground"
+                >
+                  {t(key)}
+                </Link>
+              ))}
               <Link
-                key={key}
-                href={HREFS[key]}
-                className="rounded-md px-3 py-2 text-sm text-foreground-muted hover:bg-background-elev hover:text-foreground"
+                href="/contact"
+                className="mt-2 rounded-md bg-accent px-3 py-2 text-sm font-medium text-accent-foreground"
               >
-                {t(key)}
+                {t("contact")}
               </Link>
-            ))}
-            <Link
-              href="/contact"
-              className="mt-2 rounded-md bg-accent px-3 py-2 text-sm font-medium text-accent-foreground"
-            >
-              {t("contact")}
-            </Link>
+            </div>
           </div>
-        </div>
-      )}
-    </header>
+        )}
+      </header>
+    </>
   );
 }

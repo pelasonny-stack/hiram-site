@@ -73,11 +73,28 @@ function FormSection({
   eyebrow: string;
   children: React.ReactNode;
 }) {
+  // Convert dictionary "01 // LABEL" → "[01] LABEL" CLI style
+  const formatted = eyebrow.replace(/^(\d+)\s*\/\/\s*/, "[$1] ");
   return (
     <div className="space-y-6 border-t border-border pt-10 first:border-t-0 first:pt-0">
-      <Eyebrow>{eyebrow}</Eyebrow>
+      <div className="font-mono text-xs uppercase tracking-wider text-foreground-subtle">
+        <span className="text-accent">{formatted.match(/^\[\d+\]/)?.[0] ?? ""}</span>
+        <span className="text-foreground-muted">{" "}{formatted.replace(/^\[\d+\]\s*/, "")}</span>
+      </div>
       <div className="space-y-6">{children}</div>
     </div>
+  );
+}
+
+function CliLabel({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
+  return (
+    <Label
+      htmlFor={htmlFor}
+      className="font-mono text-xs uppercase tracking-wider text-foreground-muted gap-1.5"
+    >
+      <span className="text-accent">{">"}</span>
+      <span>{children}</span>
+    </Label>
   );
 }
 
@@ -190,7 +207,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
 
       <FormSection eyebrow={t("section1")}>
         <div className="space-y-2">
-          <Label htmlFor="name">{t("name")}</Label>
+          <CliLabel htmlFor="name">{t("name")}</CliLabel>
           <Input
             id="name"
             type="text"
@@ -202,7 +219,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">{t("email")}</Label>
+          <CliLabel htmlFor="email">{t("email")}</CliLabel>
           <Input
             id="email"
             type="email"
@@ -214,7 +231,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="company">{t("company")}</Label>
+          <CliLabel htmlFor="company">{t("company")}</CliLabel>
           <Input
             id="company"
             type="text"
@@ -226,7 +243,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="role">{t("role")}</Label>
+          <CliLabel htmlFor="role">{t("role")}</CliLabel>
           <Controller
             control={control}
             name="role"
@@ -258,7 +275,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
 
       <FormSection eyebrow={t("section2")}>
         <div className="space-y-2">
-          <Label htmlFor="problem">{t("problem")}</Label>
+          <CliLabel htmlFor="problem">{t("problem")}</CliLabel>
           <Textarea
             id="problem"
             rows={6}
@@ -284,7 +301,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
 
       <FormSection eyebrow={t("section3")}>
         <div className="space-y-2">
-          <Label htmlFor="stage">{t("stage")}</Label>
+          <CliLabel htmlFor="stage">{t("stage")}</CliLabel>
           <Controller
             control={control}
             name="stage"
@@ -311,7 +328,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="eventVolume">{t("eventVolume")}</Label>
+          <CliLabel htmlFor="eventVolume">{t("eventVolume")}</CliLabel>
           <Controller
             control={control}
             name="eventVolume"
@@ -338,7 +355,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="timeline">{t("timeline")}</Label>
+          <CliLabel htmlFor="timeline">{t("timeline")}</CliLabel>
           <Controller
             control={control}
             name="timeline"
@@ -365,7 +382,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="budget">{t("budget")}</Label>
+          <CliLabel htmlFor="budget">{t("budget")}</CliLabel>
           <Controller
             control={control}
             name="budget"
@@ -397,7 +414,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
 
       <FormSection eyebrow={t("section4")}>
         <div className="space-y-2">
-          <Label htmlFor="source">{t("source")}</Label>
+          <CliLabel htmlFor="source">{t("source")}</CliLabel>
           <Input
             id="source"
             type="text"
@@ -409,7 +426,7 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="notes">{t("notes")}</Label>
+          <CliLabel htmlFor="notes">{t("notes")}</CliLabel>
           <Textarea
             id="notes"
             rows={4}
@@ -426,8 +443,9 @@ export function ContactForm({ onChange }: ContactFormProps = {}) {
           type="submit"
           size="lg"
           disabled={isSubmitting}
-          className="w-full md:w-auto"
+          className="w-full md:w-auto font-mono"
         >
+          <span className="text-accent-foreground/70">$</span>{" "}
           {isSubmitting ? t("submitting") : t("submit")}
         </Button>
         <p className="font-mono text-xs text-foreground-subtle">

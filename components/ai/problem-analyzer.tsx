@@ -10,17 +10,54 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { analysisSchema } from "@/lib/ai/schemas";
+import { ANALYZER_SYSTEM } from "@/lib/ai/prompts";
 import { StreamedSection, type StreamedSectionState } from "./streamed-section";
+import { PromptSheet } from "./prompt-sheet";
+import { initialTrace, type TraceState } from "./request-trace-panel";
 
 export function ProblemAnalyzer({
   variant = "homepage",
+  enableInspect = false,
+  seed,
+  onProblemChange,
+  onTraceChange,
 }: {
   variant?: "homepage" | "full";
+  enableInspect?: boolean;
+  seed?: string;
+  onProblemChange?: (s: string) => void;
+  onTraceChange?: (t: TraceState) => void;
 }) {
   const t = useTranslations("ProblemAnalyzer");
+  const tDemo = useTranslations("Demo");
   const seedChips = t.raw("seedChips") as string[];
-  const [problem, setProblem] = React.useState("");
+  const [problem, setProblemState] = React.useState("");
   const [rateBanner, setRateBanner] = React.useState<string | null>(null);
+
+  const onProblemChangeRef = React.useRef(onProblemChange);
+  const onTraceChangeRef = React.useRef(onTraceChange);
+  React.useEffect(() => {
+    onProblemChangeRef.current = onProblemChange;
+  }, [onProblemChange]);
+  React.useEffect(() => {
+    onTraceChangeRef.current = onTraceChange;
+  }, [onTraceChange]);
+
+  const setProblem = React.useCallback((next: string) => {
+    setProblemState(next);
+    onProblemChangeRef.current?.(next);
+  }, []);
+
+  // Trace lifecycle state.
+  const submitStartRef = React.useRef<number | null>(null);
+  const cachedThisSessionRef = React.useRef<boolean>(false);
+  const traceRef = React.useRef<TraceState>(initialTrace);
+  const tickRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const emitTrace = React.useCallback((next: TraceState) => {
+    traceRef.current = next;
+    onTraceChangeRef.current?.(next);
+  }, []);
 
   const { object, submit, isLoading, error, stop } = useObject({
     api: "/api/analyze",
@@ -39,19 +76,100 @@ export function ProblemAnalyzer({
     },
   });
 
-  const onSubmit = (text: string) => {
-    const trimmed = text.trim();
-    if (trimmed.length < 20) {
-      toast.error(t("tooShort"));
+  const onSubmit = React.useCallback(
+    (text: string) => {
+      const trimmed = text.trim();
+      if (trimmed.length < 20) {
+        toast.error(t("tooShort"));
+        return;
+      }
+      if (trimmed.length > 1500) {
+        toast.error(t("tooLong"));
+        return;
+      }
+      setRateBanner(null);
+
+      // Initialize trace for this submission.
+      const promptTokens = Math.ceil((ANALYZER_SYSTEM.length + trimmed.length) / 4);
+      const cachedTokens = cachedThisSessionRef.current
+        ? Math.ceil(ANALYZER_SYSTEM.length / 4)
+        : 0;
+      submitStartRef.current = Date.now();
+      emitTrace({
+        status: "streaming",
+        promptTokens,
+        cachedTokens,
+        outputTokens: 0,
+        latencyMs: 0,
+      });
+
+      submit({ problem: trimmed });
+    },
+    [emitTrace, submit, t],
+  );
+
+  // Drive a 100ms tick to update latency + outputTokens while streaming.
+  React.useEffect(() => {
+    if (isLoading) {
+      if (tickRef.current) clearInterval(tickRef.current);
+      tickRef.current = setInterval(() => {
+        const start = submitStartRef.current;
+        if (start == null) return;
+        const elapsed = Date.now() - start;
+        const out = object ? Math.ceil(JSON.stringify(object).length / 4) : 0;
+        emitTrace({
+          ...traceRef.current,
+          status: "streaming",
+          latencyMs: elapsed,
+          outputTokens: out,
+        });
+      }, 100);
+      return () => {
+        if (tickRef.current) {
+          clearInterval(tickRef.current);
+          tickRef.current = null;
+        }
+      };
+    }
+    // not loading: clear any tick and finalize.
+    if (tickRef.current) {
+      clearInterval(tickRef.current);
+      tickRef.current = null;
+    }
+    if (error) {
+      const start = submitStartRef.current ?? Date.now();
+      emitTrace({
+        ...traceRef.current,
+        status: "error",
+        latencyMs: Date.now() - start,
+      });
       return;
     }
-    if (trimmed.length > 1500) {
-      toast.error(t("tooLong"));
-      return;
+    if (submitStartRef.current != null && object) {
+      const elapsed = Date.now() - submitStartRef.current;
+      const out = Math.ceil(JSON.stringify(object).length / 4);
+      emitTrace({
+        ...traceRef.current,
+        status: "done",
+        latencyMs: elapsed,
+        outputTokens: out,
+      });
+      cachedThisSessionRef.current = true;
+      submitStartRef.current = null;
     }
-    setRateBanner(null);
-    submit({ problem: trimmed });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, error, object, emitTrace]);
+
+  // Auto-submit when seed prop changes (used by RecentQueriesRail picks).
+  const lastSeedRef = React.useRef<string | undefined>(undefined);
+  React.useEffect(() => {
+    if (seed == null) return;
+    if (seed === lastSeedRef.current) return;
+    lastSeedRef.current = seed;
+    if (!seed.trim()) return;
+    setProblem(seed);
+    onSubmit(seed);
+  }, [seed, onSubmit, setProblem]);
 
   const state = (key: keyof typeof analysisSchema.shape): StreamedSectionState => {
     if (error) return "error";
@@ -89,6 +207,21 @@ export function ProblemAnalyzer({
               {chip}
             </button>
           ))}
+          {enableInspect && (
+            <div className="ml-auto">
+              <PromptSheet
+                problem={problem}
+                trigger={
+                  <button
+                    type="button"
+                    className="font-mono text-[11px] uppercase tracking-wider text-foreground-subtle transition-colors hover:text-accent"
+                  >
+                    {tDemo("inspectPrompt")}
+                  </button>
+                }
+              />
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="text-xs font-mono text-foreground-subtle">

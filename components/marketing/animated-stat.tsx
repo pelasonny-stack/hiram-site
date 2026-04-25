@@ -22,11 +22,13 @@ export function AnimatedStat({
   value,
   label,
   className,
+  valueClassName,
   duration = 1100,
 }: {
   value: string;
   label: string;
   className?: string;
+  valueClassName?: string;
   duration?: number;
 }) {
   const ref = React.useRef<HTMLDivElement | null>(null);
@@ -74,10 +76,19 @@ export function AnimatedStat({
 
   return (
     <div ref={ref} className={cn("space-y-3", className)}>
-      <div className="font-mono text-4xl font-medium tracking-tight text-accent md:text-5xl lg:text-6xl">
+      <div
+        className={cn(
+          "font-mono font-medium tracking-tight text-accent",
+          valueClassName ?? "text-4xl md:text-5xl lg:text-6xl",
+        )}
+      >
         {display}
       </div>
-      <div className="text-sm text-foreground-muted max-w-[28ch]">{label}</div>
+      {label ? (
+        <div className="text-sm text-foreground-muted max-w-[28ch]">
+          {label}
+        </div>
+      ) : null}
     </div>
   );
 }

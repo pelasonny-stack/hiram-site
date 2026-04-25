@@ -11,7 +11,9 @@
     "about": "Nosotros",
     "contact": "Contacto",
     "toggleMenu": "Abrir menú",
-    "homeLabel": "Hiram — inicio"
+    "homeLabel": "Hiram — inicio",
+    "commandHint": "⌘K",
+    "scrollProgress": "Progreso de scroll"
   },
   "Footer": {
     "tagline": "Sistemas de decisión para equipos que envían a producción.",
@@ -53,7 +55,13 @@
         { "label": "EVENTOS/DÍA", "value": "50M+" },
         { "label": "LATENCIA P99", "value": "<80ms" },
         { "label": "STACK", "value": "decision_engines.ts" }
-      ]
+      ],
+      "megaAnchor": {
+        "label": "DECISIONES // HOY",
+        "value": "47832",
+        "caption": "decisiones evaluadas · últimas 24h · datos de ejemplo"
+      },
+      "liveFeedBadge": "[ FEED EN VIVO ]"
     },
     "whatWeDo": {
       "eyebrow": "01 // POSICIÓN",
@@ -149,6 +157,32 @@
   "Capabilities": {
     "metaTitle": "Capacidades",
     "metaDescription": "Motores de decisión, capas de consulta AI e infraestructura de eventos. Los tres componentes que Hiram construye — y cómo los construye.",
+    "miniRuleEvaluator": {
+      "title": "rule.evaluate()",
+      "eventLabel": "EVENT_IN",
+      "thresholdLabel": "UMBRAL_RIESGO",
+      "verdictLabel": "VEREDICTO",
+      "verdicts": { "approve": "aprobar", "review": "revisar", "reject": "rechazar" },
+      "hint": "Movés el slider y la decisión se actualiza al instante."
+    },
+    "miniQueryDemo": {
+      "title": "query.execute()",
+      "selectLabel": "QUERY",
+      "outputLabel": "RESPUESTA_ESTRUCTURADA",
+      "queries": [
+        "métodos de pago con más fallas última hora",
+        "clientes en riesgo de churn esta semana",
+        "transacciones flaggeadas por fraude esperando revisión",
+        "contribución ARR por cohorte"
+      ],
+      "hint": "Dataset mock. Mismo contrato que producción: output tipado con Zod, no chat."
+    },
+    "miniTopology": {
+      "title": "topology.live",
+      "subtitle": "3 fuentes → broker → 2 sinks + 1 DLQ",
+      "exactlyOnceBadge": "exactly-once",
+      "hint": "Hover el broker."
+    },
     "hero": {
       "eyebrow": "CAPACIDADES",
       "headline": "Tres cosas, hechas bien.",
@@ -260,7 +294,40 @@
     "metaDescription": "Describí un problema de negocio en lenguaje natural. Mirá el sistema de decisión que Hiram construiría para vos.",
     "eyebrow": "DEMO INTERACTIVO",
     "headline": "Describí el problema. Llevate el sistema.",
-    "lede": "El mismo motor que corre en el homepage, con más espacio para pensar. Inputs de más de 1.500 caracteres se truncan. Cada request está rate-limited; si llegás al cap, hablanos."
+    "lede": "El mismo motor que corre en el homepage, con más espacio para pensar. Inputs de más de 1.500 caracteres se truncan. Cada request está rate-limited; si llegás al cap, hablanos.",
+    "recentQueries": {
+      "title": "QUERIES_RECIENTES",
+      "subtitle": "Otros operadores corrieron",
+      "items": [
+        { "prompt": "Los reembolsos pican los lunes y no sabemos por qué.", "ago": "hace 2m" },
+        { "prompt": "El lead scoring es mayormente ruido — 3% de cierre.", "ago": "hace 11m" },
+        { "prompt": "Los reintentos de pago fallan más los fines de semana.", "ago": "hace 23m" },
+        { "prompt": "Los clientes churnean después del primer ticket de soporte.", "ago": "hace 47m" },
+        { "prompt": "Los holds de inventario se sueltan antes de que confirme el pago.", "ago": "hace 1h" }
+      ]
+    },
+    "requestTrace": {
+      "title": "REQUEST_TRACE",
+      "endpoint": "POST /api/analyze",
+      "promptTokens": "PROMPT_TOKENS",
+      "cachedTokens": "CACHED",
+      "outputTokens": "OUTPUT_TOKENS",
+      "latency": "LATENCY_MS",
+      "cost": "COST_USD",
+      "model": "MODEL",
+      "modelValue": "claude-haiku-4-5",
+      "idleHint": "sin request activo",
+      "estimatedHint": "estimación client-side · los logs del server son autoritativos"
+    },
+    "inspectPrompt": "INSPECCIONAR PROMPT →",
+    "promptSheet": {
+      "title": "Prompt enviado a Claude Haiku 4.5",
+      "subtitle": "Verbatim. Misma disciplina de prompting que llevamos a producción.",
+      "systemPrompt": "SYSTEM_PROMPT",
+      "userMessage": "USER_MESSAGE",
+      "copyAsCurl": "Copiar como curl",
+      "copied": "Copiado"
+    }
   },
   "Contact": {
     "metaTitle": "Contacto",

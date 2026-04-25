@@ -2,13 +2,15 @@ import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { Section, Eyebrow, Stat } from "@/components/marketing/section";
+import { Section, Eyebrow } from "@/components/marketing/section";
 import {
   TelemetryStrip,
   type TelemetryItem,
 } from "@/components/marketing/telemetry-strip";
 import { LiveSimulation } from "@/components/simulation/live-simulation";
 import { ProblemAnalyzer } from "@/components/ai/problem-analyzer";
+import { ScrollReveal } from "@/components/marketing/scroll-reveal";
+import { AnimatedStat } from "@/components/marketing/animated-stat";
 import {
   CaseSchematic,
   type SchematicVariant,
@@ -45,57 +47,88 @@ function Hero() {
         />
         <div className="container-shell relative pt-4 pb-12 md:pb-16 lg:pb-20">
           {/* 1 — top telemetry strip */}
-          <TelemetryStrip items={telemetry} />
+          <ScrollReveal delay={0}>
+            <TelemetryStrip items={telemetry} />
+          </ScrollReveal>
 
-          {/* 2 — headline block (asymmetric) */}
-          <div className="mt-10 grid gap-6 md:mt-14 lg:grid-cols-12 lg:gap-8">
-            <div className="space-y-6 lg:col-span-9">
-              <Eyebrow accent className="font-mono">
-                {t("eyebrow")}
-              </Eyebrow>
-              <h1 className="text-display-massive max-w-[14ch]">
-                {t("headline")}
-              </h1>
-              <p className="max-w-prose text-lg text-foreground-muted leading-relaxed">
-                {t("subhead")}
-              </p>
-
-              {/* 3 — CTA row */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
-                <Button asChild size="lg">
-                  <Link href="#demo">
-                    {t("ctaPrimary")}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Link
-                  href="/case-studies"
-                  className="font-mono text-sm uppercase tracking-wider text-foreground underline-sweep"
-                >
-                  <span className="text-accent">{"→ "}</span>
-                  {t("ctaSecondary")}
-                </Link>
-              </div>
+          {/* 2 — asymmetric grid: left copy + right mega anchor */}
+          <div className="mt-12 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-8">
+            {/* LEFT */}
+            <div className="lg:col-span-7">
+              <ScrollReveal delay={60}>
+                <Eyebrow accent className="font-mono">
+                  {t("eyebrow")}
+                </Eyebrow>
+              </ScrollReveal>
+              <ScrollReveal delay={120}>
+                <h1 className="text-display-mega max-w-[12ch] mt-5">
+                  {t("headline")}
+                </h1>
+              </ScrollReveal>
+              <ScrollReveal delay={200}>
+                <p className="max-w-prose text-lg text-foreground-muted leading-relaxed mt-7">
+                  {t("subhead")}
+                </p>
+              </ScrollReveal>
+              <ScrollReveal delay={320}>
+                <div className="flex flex-wrap gap-3 mt-7">
+                  <Button asChild size="lg">
+                    <Link href="#demo">
+                      {t("ctaPrimary")}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="quiet"
+                    className="font-mono"
+                  >
+                    <Link href="/case-studies">
+                      {"→ "}
+                      {t("ctaSecondary")}
+                    </Link>
+                  </Button>
+                </div>
+              </ScrollReveal>
+              <ScrollReveal delay={440}>
+                <div className="hairline-rule mt-8" />
+                <p className="text-eyebrow text-foreground-subtle mt-4">
+                  {t("trust")}
+                </p>
+              </ScrollReveal>
             </div>
-            <div className="hidden lg:col-span-3 lg:flex lg:items-end lg:justify-end">
-              <span className="font-mono text-xs uppercase tracking-wider text-foreground-subtle">
-                {"// v0.1"}
-              </span>
-            </div>
-          </div>
 
-          {/* 4 — trust strip */}
-          <div className="mt-12 md:mt-16">
-            <div className="hairline-rule" />
-            <p className="mt-4 text-eyebrow text-foreground-subtle">
-              {t("trust")}
-            </p>
+            {/* RIGHT — MEGA ANCHOR */}
+            <div className="lg:col-span-5">
+              <ScrollReveal delay={200}>
+                <div className="flex flex-col items-end justify-end h-full pt-8 lg:pt-0">
+                  <div className="text-eyebrow text-foreground-subtle">
+                    {t("megaAnchor.label")}
+                  </div>
+                  <div className="mt-2 self-end">
+                    <AnimatedStat
+                      value={t("megaAnchor.value")}
+                      label=""
+                      valueClassName="text-display-massive text-right"
+                      className="!text-right"
+                    />
+                  </div>
+                  <div className="text-xs font-mono text-foreground-subtle mt-3 text-right max-w-[28ch]">
+                    {t("megaAnchor.caption")}
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="relative border-y border-border bg-background-elev/30">
         <div className="container-shell py-8">
+          <div className="absolute left-6 top-3 font-mono text-[10px] tracking-wider pulse-dot text-accent">
+            {t("liveFeedBadge")}
+          </div>
           <LiveSimulation variant="strip" />
         </div>
       </section>
@@ -142,26 +175,34 @@ function Proof() {
 
   return (
     <Section bleed>
-      <div className="text-center">
-        <Eyebrow>{t("eyebrow")}</Eyebrow>
-        <h2 className="text-h2 mt-4">{t("headline")}</h2>
-      </div>
+      <ScrollReveal>
+        <div className="text-center">
+          <Eyebrow>{t("eyebrow")}</Eyebrow>
+          <h2 className="text-h2 mt-4">{t("headline")}</h2>
+        </div>
+      </ScrollReveal>
       <div className="mt-14 grid gap-12 md:grid-cols-3 md:gap-8">
-        <Stat
-          value={stats[0].value}
-          label={stats[0].label}
-          className="md:text-center md:items-center md:flex md:flex-col"
-        />
-        <Stat
-          value={stats[1].value}
-          label={stats[1].label}
-          className="md:text-center md:items-center md:flex md:flex-col md:border-x md:border-border md:px-8"
-        />
-        <Stat
-          value={stats[2].value}
-          label={stats[2].label}
-          className="md:text-center md:items-center md:flex md:flex-col"
-        />
+        <ScrollReveal delay={80}>
+          <AnimatedStat
+            value={stats[0].value}
+            label={stats[0].label}
+            className="md:text-center md:items-center md:flex md:flex-col"
+          />
+        </ScrollReveal>
+        <ScrollReveal delay={160}>
+          <AnimatedStat
+            value={stats[1].value}
+            label={stats[1].label}
+            className="md:text-center md:items-center md:flex md:flex-col md:border-x md:border-border md:px-8"
+          />
+        </ScrollReveal>
+        <ScrollReveal delay={240}>
+          <AnimatedStat
+            value={stats[2].value}
+            label={stats[2].label}
+            className="md:text-center md:items-center md:flex md:flex-col"
+          />
+        </ScrollReveal>
       </div>
       <p className="mt-10 text-center text-sm text-foreground-subtle">
         {t("footnote")}
@@ -209,10 +250,12 @@ function Capabilities() {
 
   return (
     <Section>
-      <div className="max-w-2xl">
-        <Eyebrow>{t("eyebrow")}</Eyebrow>
-        <h2 className="text-h1 mt-4">{t("headline")}</h2>
-      </div>
+      <ScrollReveal>
+        <div className="max-w-2xl">
+          <Eyebrow>{t("eyebrow")}</Eyebrow>
+          <h2 className="text-h1 mt-4">{t("headline")}</h2>
+        </div>
+      </ScrollReveal>
       <div className="mt-12 grid gap-5 lg:grid-cols-3">
         {cards.map((c, i) => {
           const idx = String(i + 1).padStart(2, "0");
@@ -280,19 +323,21 @@ function CaseStudiesPreview() {
 
   return (
     <Section bleed>
-      <div className="flex items-end justify-between gap-6">
-        <div>
-          <Eyebrow>{t("eyebrow")}</Eyebrow>
-          <h2 className="text-h1 mt-4 max-w-2xl">{t("headline")}</h2>
-          <p className="mt-4 max-w-prose text-foreground-muted">{t("lede")}</p>
+      <ScrollReveal>
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <Eyebrow>{t("eyebrow")}</Eyebrow>
+            <h2 className="text-h1 mt-4 max-w-2xl">{t("headline")}</h2>
+            <p className="mt-4 max-w-prose text-foreground-muted">{t("lede")}</p>
+          </div>
+          <Link
+            href="/case-studies"
+            className="hidden text-eyebrow text-accent hover:underline md:inline-flex"
+          >
+            {t("all")}
+          </Link>
         </div>
-        <Link
-          href="/case-studies"
-          className="hidden text-eyebrow text-accent hover:underline md:inline-flex"
-        >
-          {t("all")}
-        </Link>
-      </div>
+      </ScrollReveal>
       <div className="mt-12 grid gap-5 lg:grid-cols-3">
         {cases.map((c, i) => {
           const stamp = PREVIEW_STAMPS[i] ?? "HIRAM // —";
@@ -353,6 +398,7 @@ function FinalCTA() {
   const tCommon = useTranslations("Common");
   return (
     <Section>
+      <ScrollReveal>
       <div className="mx-auto max-w-3xl text-center space-y-7">
         <h2 className="text-display">{t("headline")}</h2>
         <p className="text-lg text-foreground-muted max-w-prose mx-auto">
@@ -370,6 +416,7 @@ function FinalCTA() {
           {tCommon("respondWithin")}
         </p>
       </div>
+      </ScrollReveal>
     </Section>
   );
 }

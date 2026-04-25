@@ -157,11 +157,36 @@
     font-family: var(--font-mono);
   }
 
-  .text-display-massive {
-    font-size: clamp(3rem, 8vw + 1rem, 7.5rem);
-    line-height: 0.92;
+  /*
+   * SEMANTIC COLOR CONTRACT (v3)
+   *
+   * Strict roles. Do not mix.
+   *   --accent  (mint)    → numerics, primary CTA, "decided/done" state
+   *   --info    (blue)    → live/streaming/in-flight state
+   *   --warning (amber)   → "needs review", "cached", caution
+   *   --danger  (red)     → errors, rejections, validation failures
+   *   --success (green)   → reserved (use --accent for "ok"); avoid double-greens
+   *
+   * Foreground hierarchy:
+   *   --foreground         → primary text
+   *   --foreground-muted   → secondary text, body prose
+   *   --foreground-subtle  → labels, captions, instrument chrome
+   */
+
+  .text-display-mega {
+    font-size: clamp(4rem, 14vw + 1rem, 14rem);
+    line-height: 0.88;
     font-weight: 500;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.05em;
+    font-feature-settings: "kern", "ss01", "tnum";
+  }
+
+  .text-display-massive {
+    font-size: clamp(3rem, 11vw + 1rem, 10.5rem);
+    line-height: 0.9;
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    font-feature-settings: "kern", "ss01", "tnum";
   }
 
   .text-display {
@@ -339,6 +364,44 @@
     transform: translateY(0);
   }
 
+  .blink-cursor {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.85em;
+    background: var(--accent);
+    margin-left: 0.06em;
+    vertical-align: -0.12em;
+    animation: cursor-blink 1.1s steps(2, start) infinite;
+  }
+
+  @keyframes cursor-blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    50.01%, 100% {
+      opacity: 0;
+    }
+  }
+
+  .wordmark-letter {
+    display: inline-block;
+    transition: color var(--motion-base) var(--ease-out-quart);
+  }
+  .wordmark:hover .wordmark-letter {
+    color: var(--accent);
+  }
+
+  .scroll-progress {
+    position: fixed;
+    inset-inline: 0;
+    top: 64px;
+    height: 1px;
+    background: var(--accent);
+    transform-origin: left;
+    z-index: 60;
+    pointer-events: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal-on-scroll {
       opacity: 1;
@@ -347,6 +410,13 @@
     }
     .pulse-dot::before {
       animation: none;
+    }
+    .blink-cursor {
+      animation: none;
+      opacity: 1;
+    }
+    .wordmark-letter {
+      transition: none;
     }
   }
 

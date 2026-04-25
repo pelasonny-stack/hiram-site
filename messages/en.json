@@ -11,7 +11,9 @@
     "about": "About",
     "contact": "Contact",
     "toggleMenu": "Toggle menu",
-    "homeLabel": "Hiram — home"
+    "homeLabel": "Hiram — home",
+    "commandHint": "⌘K",
+    "scrollProgress": "Page scroll progress"
   },
   "Footer": {
     "tagline": "Decision systems for teams that ship.",
@@ -53,7 +55,13 @@
         { "label": "EVENTS/DAY", "value": "50M+" },
         { "label": "P99 LATENCY", "value": "<80ms" },
         { "label": "STACK", "value": "decision_engines.ts" }
-      ]
+      ],
+      "megaAnchor": {
+        "label": "DECISIONS // TODAY",
+        "value": "47832",
+        "caption": "decisions evaluated · last 24h · sample data"
+      },
+      "liveFeedBadge": "[ LIVE FEED ]"
     },
     "whatWeDo": {
       "eyebrow": "01 // POSITION",
@@ -149,6 +157,32 @@
   "Capabilities": {
     "metaTitle": "Capabilities",
     "metaDescription": "Decision engines, AI query layers, and event infrastructure. The three components Hiram builds — and how we build them.",
+    "miniRuleEvaluator": {
+      "title": "rule.evaluate()",
+      "eventLabel": "EVENT_IN",
+      "thresholdLabel": "RISK_THRESHOLD",
+      "verdictLabel": "VERDICT",
+      "verdicts": { "approve": "approve", "review": "review", "reject": "reject" },
+      "hint": "Slide to change the threshold. Decision updates instantly."
+    },
+    "miniQueryDemo": {
+      "title": "query.execute()",
+      "selectLabel": "QUERY",
+      "outputLabel": "STRUCTURED_RESPONSE",
+      "queries": [
+        "top failing payment methods last hour",
+        "customers at churn risk this week",
+        "fraud-flagged transactions awaiting review",
+        "ARR contribution by cohort"
+      ],
+      "hint": "Mock dataset. Same contract as production: typed Zod output, no chat."
+    },
+    "miniTopology": {
+      "title": "topology.live",
+      "subtitle": "3 sources → broker → 2 sinks + 1 DLQ",
+      "exactlyOnceBadge": "exactly-once",
+      "hint": "Hover the broker."
+    },
     "hero": {
       "eyebrow": "CAPABILITIES",
       "headline": "Three things, done well.",
@@ -260,7 +294,40 @@
     "metaDescription": "Describe a business problem in plain English. See the decision system Hiram would build for you.",
     "eyebrow": "INTERACTIVE DEMO",
     "headline": "Describe the problem. Get the system.",
-    "lede": "Same engine that runs on the homepage, with more room to think. Inputs over 1,500 characters get truncated. Each request is rate-limited; if you hit the cap, talk to us."
+    "lede": "Same engine that runs on the homepage, with more room to think. Inputs over 1,500 characters get truncated. Each request is rate-limited; if you hit the cap, talk to us.",
+    "recentQueries": {
+      "title": "RECENT_QUERIES",
+      "subtitle": "Other operators ran",
+      "items": [
+        { "prompt": "Refunds spike on Mondays and we don't know why.", "ago": "2m ago" },
+        { "prompt": "Lead scoring is mostly noise — 3% close rate.", "ago": "11m ago" },
+        { "prompt": "Payment retries fail more on weekends.", "ago": "23m ago" },
+        { "prompt": "Customers churn after first support ticket.", "ago": "47m ago" },
+        { "prompt": "Inventory holds release before payment confirms.", "ago": "1h ago" }
+      ]
+    },
+    "requestTrace": {
+      "title": "REQUEST_TRACE",
+      "endpoint": "POST /api/analyze",
+      "promptTokens": "PROMPT_TOKENS",
+      "cachedTokens": "CACHED",
+      "outputTokens": "OUTPUT_TOKENS",
+      "latency": "LATENCY_MS",
+      "cost": "COST_USD",
+      "model": "MODEL",
+      "modelValue": "claude-haiku-4-5",
+      "idleHint": "no active request",
+      "estimatedHint": "client-side estimate · server logs are authoritative"
+    },
+    "inspectPrompt": "INSPECT PROMPT →",
+    "promptSheet": {
+      "title": "Prompt sent to Claude Haiku 4.5",
+      "subtitle": "Verbatim. Same prompt discipline we ship to production.",
+      "systemPrompt": "SYSTEM_PROMPT",
+      "userMessage": "USER_MESSAGE",
+      "copyAsCurl": "Copy as curl",
+      "copied": "Copied"
+    }
   },
   "Contact": {
     "metaTitle": "Contact",
