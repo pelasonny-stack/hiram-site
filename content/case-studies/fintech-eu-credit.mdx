@@ -1,0 +1,98 @@
+---
+title: "Credit pre-approval engine for an EU fintech"
+slug: "fintech-eu-credit"
+publishedAt: "2026-03-18"
+industry: "Fintech"
+region: "EU"
+context: "A consumer fintech offering point-of-sale installment credit. Manual review took 36 hours on average and was the bottleneck on conversion at checkout."
+system: "Hybrid decision engine: deterministic eligibility rules, ML-scored risk, deterministic policy gates, GDPR-compliant decision log. Replaced 14 manual review steps with a single sub-90s automated path."
+stack:
+  languages: ["TypeScript", "Python"]
+  events: ["Kafka", "PostgreSQL CDC (Debezium)"]
+  storage: ["PostgreSQL", "S3 (decision archive)"]
+  ml: ["LightGBM", "scikit-learn"]
+  infra: ["Kubernetes (GKE)", "Pulumi"]
+timeline:
+  rolloutWeeks: 4
+  shadowWeeks: 3
+team: "3 Hiram engineers + 1 client risk lead + 1 client compliance officer"
+metrics:
+  - { label: "Decision time", value: "36h → 90s" }
+  - { label: "Manual steps replaced", value: "14" }
+  - { label: "Decision replayability", value: "100%" }
+outcome: "Decision time dropped from 36 hours to a 90-second median. Every decision is replayable from immutable inputs, with a GDPR-compliant explanation surface. Manual review still exists, but only on a 6% edge band the engine explicitly defers."
+sample: true
+seo:
+  description: "How we replaced a 14-step manual credit review with a hybrid ML + rules engine producing GDPR-compliant decisions in under 90 seconds for an EU fintech."
+---
+
+## Context
+
+The client offered installment credit at checkout for online merchants across three EU markets. Their underwriting workflow had been built incrementally: a web form, a credit bureau pull, a fraud check, an income estimator, a manual reviewer, a second-level reviewer for amounts above a threshold, and several sub-steps for documentation requests. Median decision time was 36 hours. Conversion at checkout suffered for any cart that did not get an instant decision, and the team's growth target for the year required absorbing roughly 4x volume without growing the review team proportionally.
+
+The brief was to replace the bulk of the manual flow with an automated decision path that would be defensible under GDPR Article 22 (decisions based solely on automated processing) — meaning every decision had to be explainable, every input retrievable, and every rule that fired identifiable.
+
+## Constraints
+
+- **GDPR Article 22.** Automated decisions against natural persons require an explanation surface and a path to human review. We were not allowed to ship a black box.
+- **Data residency in the EU.** All processing in-region; no cross-border egress, even for telemetry.
+- **Existing PostgreSQL as system of record.** The application database held customer files and could not be replaced. We had to ingest from it without coupling to its schema in dangerous ways.
+- **Compliance sign-off on every model release.** The model artifact, training data lineage, and feature definitions had to be approved before deployment. No production retraining.
+- **Four weeks** to first decisions in production.
+
+## System
+
+A TypeScript decision service receives a credit request, hydrates a feature vector from an event-sourced view of the customer, and runs three layers in sequence.
+
+- **Eligibility gates.** Deterministic rules. Age, residency, sanctions list, basic data completeness. Output: `eligible | rejected | needs_data`.
+- **Risk scoring.** A LightGBM model trained on three years of repayment history. Inputs: 47 features derived from credit bureau response, application data, and the customer's prior interactions on the platform. Output: a calibrated PD (probability of default).
+- **Policy gates.** Deterministic again. Combines the PD with the requested amount, term, and merchant category against a versioned policy table. Output: `approve | decline | refer`.
+
+Every step writes to an append-only decision log on S3, keyed by decision id. The log captures inputs, intermediate scores, rule ids that fired, model version, policy version, and final action. Recovery and audit are straightforward: any decision can be replayed against the same inputs with the same model and policy versions and produce the same result.
+
+```ts
+type DecisionRecord = {
+  decisionId: string;
+  applicationId: string;
+  emittedAt: string; // ISO 8601 UTC
+  inputsHash: string; // sha256 of the canonicalized feature vector
+  modelVersion: string;
+  policyVersion: string;
+  layers: {
+    eligibility: { passed: boolean; rulesFired: string[] };
+    risk: { pd: number; calibrationVersion: string };
+    policy: {
+      action: "approve" | "decline" | "refer";
+      rulesFired: string[];
+      reasonCodes: string[]; // GDPR-friendly explanation
+    };
+  };
+  finalAction: "approve" | "decline" | "refer";
+};
+```
+
+The `referAction` is the relief valve: any case the engine is not confident about, or any case where the requested amount falls into a sensitive band, is routed to a human reviewer with the full decision record attached.
+
+## Stack
+
+- **Languages:** TypeScript (decision service, policy DSL), Python (model training, calibration)
+- **Events:** Kafka, with Debezium streaming CDC from the PostgreSQL system of record
+- **Storage:** PostgreSQL (operational), S3 (immutable decision archive, object-lock enabled)
+- **ML:** LightGBM with isotonic calibration, scikit-learn for the calibration layer
+- **Infra:** GKE in europe-west, Pulumi for IaC
+
+## Rollout
+
+Three weeks in shadow. The engine ran against every live application but emitted to a side log; the human review team continued to make the binding decision. We compared engine decisions to human decisions daily, surfaced disagreements to the risk lead, and tuned the policy table — not the model — to absorb the corrections. The model was frozen from week two onward.
+
+Production cutover was gated on three numbers: precision against human approvals at 96% on the auto-approve band, false approval rate under 0.4% on amounts below the threshold, and refer-rate at 6% of volume. We hit all three by the end of week three and went live with a 10% canary that ramped to 100% over the fourth week.
+
+## Outcome
+
+Median time-to-decision fell from 36 hours to 90 seconds. The auto-approve and auto-decline paths together cover 94% of incoming applications; the remaining 6% are referred to a now-much-smaller human review team that handles the genuinely hard cases. Every decision in the archive is replayable, and the engine's explanation surface has been used in three regulatory inquiries with no findings.
+
+Conversion at checkout went up. The risk team did not provide us a number we are allowed to publish, but it was big enough that the engagement extended into a second phase.
+
+## What we'd do differently
+
+The policy DSL we built was probably too clever. We invented a small expression language so the risk team could edit policy rules without engineering involvement. They never used it directly — they always asked us to make the change anyway, because the safety net of a code review felt better than the safety net of a DSL. Next time we would write the policy table in plain TypeScript with strong types, accept that any change ships through PR, and not spend the week building an interpreter.

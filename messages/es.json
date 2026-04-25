@@ -1,0 +1,424 @@
+{
+  "Common": {
+    "rights": "Todos los derechos reservados.",
+    "builtWith": "HECHO CON NEXT.JS · DESPLEGADO EN VERCEL",
+    "respondWithin": "RESPONDEMOS DENTRO DE 2 DÍAS HÁBILES · RECHAZAMOS ~60% DE LO QUE NOS LLEGA — CASI SIEMPRE POR ENCAJE, NO POR PRESUPUESTO."
+  },
+  "Nav": {
+    "capabilities": "Capacidades",
+    "caseStudies": "Casos",
+    "demo": "Demo",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "toggleMenu": "Abrir menú",
+    "homeLabel": "Hiram — inicio"
+  },
+  "Footer": {
+    "tagline": "Sistemas de decisión para equipos que envían a producción.",
+    "product": "Producto",
+    "company": "Compañía",
+    "connect": "Conectar",
+    "decisionEngines": "Motores de Decisión",
+    "aiQueryLayer": "Capa de Consulta AI",
+    "eventInfrastructure": "Infraestructura de Eventos",
+    "interactiveDemo": "Demo Interactivo",
+    "statusPrefix": "ESTADO",
+    "statusValue": "TODOS_LOS_SISTEMAS_NORMALES",
+    "version": "v0.1.0",
+    "utcLabel": "UTC",
+    "signOff": "Hecho por humanos que escriben Rust los fines de semana."
+  },
+  "ThemeToggle": {
+    "switchToLight": "Cambiar a tema claro",
+    "switchToDark": "Cambiar a tema oscuro",
+    "toggle": "Cambiar tema"
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma",
+    "en": "English",
+    "es": "Español"
+  },
+  "Home": {
+    "metaTitle": "Hiram — Sistemas de decisión que convierten datos en ingresos",
+    "metaDescription": "Motores de decisión en tiempo real, infraestructura de consulta AI y sistemas event-driven en producción.",
+    "hero": {
+      "eyebrow": "HIRAM // SISTEMAS DE DECISIÓN",
+      "headline": "Sistemas que convierten datos en decisiones automáticas.",
+      "subhead": "Construimos la capa entre tus eventos y tus resultados de negocio. Motores de decisión en tiempo real, infraestructura de consulta AI y arquitecturas event-driven que reemplazan dashboards y operaciones manuales con software que decide.",
+      "ctaPrimary": "Ver un motor en vivo",
+      "ctaSecondary": "Leer casos",
+      "trust": "EN PRODUCCIÓN PARA OPERADORES TELCO, FINTECH Y RETAIL QUE PROCESAN 10M+ EVENTOS/DÍA.",
+      "telemetry": [
+        { "label": "ESTADO", "value": "EN VIVO", "live": true },
+        { "label": "EVENTOS/DÍA", "value": "50M+" },
+        { "label": "LATENCIA P99", "value": "<80ms" },
+        { "label": "STACK", "value": "decision_engines.ts" }
+      ]
+    },
+    "whatWeDo": {
+      "eyebrow": "01 // POSICIÓN",
+      "headline": "No somos una agencia. Construimos sistemas de decisión.",
+      "lede": "La mayoría de los equipos no necesita otro dashboard. Necesita software que tome un evento, aplique la lógica correcta y dispare la acción correcta — sin un humano en el medio. Eso es lo que construimos, y es lo único que construimos.",
+      "rows": [
+        {
+          "title": "Motores de decisión, no constructores de workflows.",
+          "body": "Vos traés las reglas, las restricciones y los SLA. Nosotros construimos el motor que las ejecuta de forma determinista a escala, con auditoría completa y rollouts en modo shadow."
+        },
+        {
+          "title": "AI donde toma la decisión, no donde adorna una demo.",
+          "body": "LLMs y modelos ML embebidos dentro del path de decisión — no enchufados a una ventana de chat. Capas de consulta sobre tus datos operacionales para que analistas y sistemas tengan respuestas en segundos."
+        },
+        {
+          "title": "Infraestructura de eventos que sobrevive un lunes a la mañana.",
+          "body": "Kafka, Redpanda, Kinesis, NATS — diseñamos la topología, los esquemas, los consumidores y la estrategia de dead-letter. Cuando el volumen sube, no se pierde nada en silencio."
+        }
+      ]
+    },
+    "proof": {
+      "eyebrow": "02 // PRUEBA",
+      "headline": "Números de producción, no de un pitch deck.",
+      "stats": [
+        { "value": "50M+", "label": "eventos/día procesados en motores activos de clientes" },
+        { "value": "<80ms", "label": "latencia p99 de decisión en motor de scoring de fraude en tiempo real" },
+        { "value": "4 semanas", "label": "del contrato a la primera decisión en producción, típico" }
+      ],
+      "footnote": "Cifras ilustrativas basadas en engagements de producción. Casos anonimizados abajo."
+    },
+    "demo": {
+      "eyebrow": "03 // VEELO CORRER",
+      "headline": "Describí el problema. Llevate el sistema.",
+      "lede": "Problema de negocio en lenguaje natural. Diagnóstico, sistema sugerido, una regla de decisión de ejemplo con un payload JSON real, y un bracket de esfuerzo/impacto. Misma disciplina de prompting que llevamos a producción."
+    },
+    "capabilities": {
+      "eyebrow": "04 // CAPACIDADES",
+      "headline": "Tres cosas, hechas bien.",
+      "cards": [
+        {
+          "title": "Motores de Decisión",
+          "body": "Motores de reglas deterministas, decisiones scoreadas con ML, pipelines híbridos. Reglas versionadas, deploys en shadow, replay completo contra eventos históricos.",
+          "bullets": ["COMPILACIÓN DE REGLAS", "MODOS SHADOW + CANARY", "REPLAY Y AUDITORÍA"]
+        },
+        {
+          "title": "Capa de Consulta AI",
+          "body": "Consultas en lenguaje natural sobre tus datos operacionales, con outputs estructurados que tus sistemas pueden ejecutar. No es un chatbot — es una API.",
+          "bullets": ["PROMPTS CON CONOCIMIENTO DE ESQUEMA", "CONTRATOS DE OUTPUT ESTRUCTURADO", "EVAL HARNESS POR TIPO DE QUERY"]
+        },
+        {
+          "title": "Infraestructura de Eventos",
+          "body": "Topologías, esquemas, consumidores, DLQs. Kafka, Redpanda, Kinesis, NATS. Elegimos la herramienta aburrida cuando lo aburrido es lo correcto.",
+          "bullets": ["DISCIPLINA DE SCHEMA REGISTRY", "EXACTLY-ONCE DONDE IMPORTA", "BACKPRESSURE POR DISEÑO"]
+        }
+      ],
+      "cardCta": "Cómo lo construimos →"
+    },
+    "caseStudiesPreview": {
+      "eyebrow": "05 // EN PRODUCCIÓN",
+      "headline": "Sistemas corriendo en producción ahora mismo.",
+      "lede": "Anonimizados a pedido del cliente. Las arquitecturas y métricas son reales.",
+      "all": "TODOS LOS CASOS →",
+      "sampleBadge": "EJEMPLO",
+      "readCase": "Leer el caso →",
+      "cards": [
+        {
+          "slug": "telco-latam-fraud",
+          "title": "Scoring de fraude en tiempo real para una telco de LATAM",
+          "summary": "Reemplazamos un rule pack legacy con un motor híbrido en Rust. Latencia p99 de 480ms → 80ms, falsos positivos -23%.",
+          "metrics": "50M/DÍA · <80MS P99 · -23% FP"
+        },
+        {
+          "slug": "fintech-eu-credit",
+          "title": "Motor de pre-aprobación crediticia para una fintech EU",
+          "summary": "Reemplazamos una revisión manual de 14 pasos con un motor híbrido ML+reglas. Tiempo de decisión de 36h a 90s.",
+          "metrics": "36H → 90S · ROLLOUT 4 SEMANAS · VALIDADO EN SHADOW"
+        },
+        {
+          "slug": "retail-na-pricing",
+          "title": "Motor de precios dinámicos para un retailer NA",
+          "summary": "Decisiones de precios horarias en 80k SKUs, basadas en señales de competencia y presión de inventario. +6.8% de margen en 90 días.",
+          "metrics": "80K SKUS · HORARIO · +6.8% MARGEN"
+        }
+      ]
+    },
+    "finalCta": {
+      "headline": "Si tenés eventos, podemos construir el sistema que decida sobre ellos.",
+      "lede": "Contanos tu volumen de eventos, tu latencia de decisión actual y qué te está bloqueando. Te decimos si somos el encaje correcto — o quién lo es.",
+      "ctaPrimary": "Empezar una conversación",
+      "ctaSecondary": "Ver el demo completo →"
+    }
+  },
+  "Capabilities": {
+    "metaTitle": "Capacidades",
+    "metaDescription": "Motores de decisión, capas de consulta AI e infraestructura de eventos. Los tres componentes que Hiram construye — y cómo los construye.",
+    "hero": {
+      "eyebrow": "CAPACIDADES",
+      "headline": "Tres cosas, hechas bien.",
+      "lede": "Cada sistema de decisión que Hiram entrega es alguna combinación de los mismos tres componentes: un motor de decisión que ejecuta tu lógica de negocio, una capa de consulta AI que convierte datos operacionales en respuestas estructuradas, e infraestructura de eventos que no pierde mensajes. No construimos dashboards, no construimos chatbots, y no aceptamos trabajo que no encaje en ninguna de esas categorías."
+    },
+    "toc": [
+      { "num": "01", "label": "Motores de Decisión" },
+      { "num": "02", "label": "Capa de Consulta AI" },
+      { "num": "03", "label": "Infraestructura de Eventos" }
+    ],
+    "howItWorks": "CÓMO FUNCIONA",
+    "whenYouNeedThis": "CUÁNDO LO NECESITÁS",
+    "decisionEngines": {
+      "eyebrow": "01 // MOTORES DE DECISIÓN",
+      "headline": "La capa de motor entre tus eventos y tu lógica de negocio.",
+      "lede": "Todo equipo operacional eventualmente acumula reglas: aprobar esta transacción, throttlear ese cliente, rutear este caso a un humano. Viven en planillas, en hilos de Slack, en if-statements de tres mil líneas enterrados en la API. Un motor de decisión es el software dedicado que es dueño de esas reglas — las ejecuta de forma determinista, las versiona como código, y te da un trail de replay cuando alguien pregunta por qué un cliente recibió la respuesta que recibió.",
+      "items": [
+        { "title": "Compilación de reglas", "body": "Reglas escritas en un DSL tipado o YAML, compiladas a un grafo de decisión determinista. Sin interpretación en runtime — el motor evalúa un artefacto compilado." },
+        { "title": "Pipelines híbridos ML + reglas", "body": "Los modelos scorean features, las reglas autorizan la acción. Thresholds de score, reglas de override y checks de política viven al lado del modelo — no aguas abajo." },
+        { "title": "Modos shadow + canary", "body": "Cada nueva versión de regla corre en shadow contra tráfico real antes de poseer una sola decisión. Reportes de diff por cohorte antes de promover, canary por tenant o porcentaje al promover." },
+        { "title": "Replay y auditoría de decisiones", "body": "Cada decisión guarda los inputs, la versión de regla, la versión de modelo y el path por el grafo. Volvés a ejecutar cualquier decisión contra cualquier set de reglas pasado o futuro." }
+      ],
+      "comparisonIntro": "La mayoría de los equipos llega a una herramienta de workflow, una plataforma BPM o un servicio hand-rolled. Cada una falla en al menos un eje que importa cuando las decisiones afectan ingresos.",
+      "comparisonHeaders": ["", "Determinista", "Replay auditable", "p99 sub-100ms", "Reglas versionadas"],
+      "comparisonRows": [
+        "Workflow tools (n8n, Temporal)",
+        "Servicio hand-rolled",
+        "Plataformas BPM",
+        "Motor de decisión Hiram"
+      ]
+    },
+    "aiQueryLayer": {
+      "eyebrow": "02 // CAPA DE CONSULTA AI",
+      "headline": "Hacele una pregunta a tus datos operacionales. Llevate una respuesta estructurada que tu sistema pueda ejecutar.",
+      "lede": "La mayoría de los productos de AI sobre datos terminan en una ventana de chat. Nosotros terminamos en una API. Mismo LLM debajo, pero el contrato es un objeto tipado que tus sistemas downstream pueden consumir — no un párrafo que un humano tiene que interpretar. Prompts con conocimiento de esquema, validación de output, eval harnesses y paths de fallback explícitos.",
+      "items": [
+        { "title": "Prompts con conocimiento de esquema", "body": "El modelo ve la forma de tus datos (esquemas de tabla, formas de evento, glosario de negocio) en runtime. Sin columnas alucinadas." },
+        { "title": "Contratos de output estructurado", "body": "Cada tipo de query tiene un schema de respuesta tipado (Zod / JSON Schema). Los outputs se validan, se reintentan en falla, se exponen como errores tipados." },
+        { "title": "Eval harness por tipo de query", "body": "Construimos un golden dataset chico por tipo de query y lo corremos en cada cambio de prompt. CI falla en regresiones que podés ver, antes de llegar a prod." },
+        { "title": "Paths de fallback y guardrails", "body": "Rate limits, timeouts, fallbacks deterministas. El sistema degrada con gracia cuando el modelo está lento o equivocado." }
+      ],
+      "limitsTitle": "LO QUE NO DEJAMOS QUE LOS LLM DECIDAN",
+      "limits": [
+        "Autorización final sobre acciones irreversibles (cobros, terminaciones, payouts).",
+        "Cualquier cosa regulada sin un overlay de reglas explícito (decisiones crediticias, rechazo de servicio, cierre de cuenta).",
+        "Cualquier cosa donde el costo de una respuesta equivocada supere el costo de preguntarle a un humano."
+      ]
+    },
+    "eventInfrastructure": {
+      "eyebrow": "03 // INFRAESTRUCTURA DE EVENTOS",
+      "headline": "Sistemas event-driven que no pierden mensajes en silencio un lunes a la mañana.",
+      "lede": "El motor de decisión es solo tan bueno como el stream de eventos que lo alimenta. Diseñamos la topología, los esquemas, los consumidores y el comportamiento ante fallas. Elegimos la herramienta aburrida cuando lo aburrido es lo correcto.",
+      "toolingTitle": "QUÉ HERRAMIENTA ELEGIMOS Y CUÁNDO",
+      "tooling": [
+        { "title": "Kafka", "body": "Cuando ya tenés un equipo de plataforma que la opera, o necesitás el ecosistema de conectores más amplio y herramientas que vas a encontrar en Stack Overflow a las 2am." },
+        { "title": "Redpanda", "body": "Cuando querés la API de Kafka sin ops de ZooKeeper / KRaft, menor latencia y un solo binario. Buen default para greenfield." },
+        { "title": "Kinesis", "body": "Cuando ya estás profundo en AWS y los tradeoffs (shards ordenados, matemática de throughput por shard) encajan con tus patrones de acceso." },
+        { "title": "NATS / JetStream", "body": "Cuando querés ops liviano, patrones request-reply, y JetStream te da la durabilidad + ordenamiento que necesitás." }
+      ],
+      "alwaysTitle": "PARA LO QUE SIEMPRE DISEÑAMOS",
+      "always": [
+        { "title": "Disciplina de schema registry", "body": "Cada evento tiene un schema versionado, los breaking changes pasan por contract review. Los consumidores fallan ruidosamente ante payloads incompatibles, nunca en silencio." },
+        { "title": "Exactly-once donde importa", "body": "At-least-once en todo el resto. Idempotency keys en la capa de acción hacen visible la diferencia para los consumidores." },
+        { "title": "Backpressure por diseño", "body": "Los productores se desaceleran cuando los consumidores no llegan. Sin colas no acotadas. Sin bills sorpresa." },
+        { "title": "DLQ + estrategia de replay desde día uno", "body": "Los eventos fallidos van a un dead-letter topic con payload original + contexto del fallo. El tooling de replay es parte del entregable, no un ticket futuro." }
+      ]
+    }
+  },
+  "About": {
+    "metaTitle": "Nosotros",
+    "metaDescription": "Hiram construye sistemas de decisión. Equipo chico de ingenieros senior con ADN de product company. Un solo punto de contacto técnico, transferencia completa de IP al finalizar.",
+    "hero": {
+      "eyebrow": "NOSOTROS",
+      "headline": "Hiram construye sistemas de decisión. Esa es toda la compañía.",
+      "lede": "Equipo chico de ingenieros senior. ADN de product company. Sin gerentes de cuenta tipo agencia. Un solo punto de contacto técnico, desde el kickoff hasta el handoff."
+    },
+    "whatWeAre": {
+      "eyebrow": "01 // QUIÉNES SOMOS",
+      "headline": "Quiénes somos.",
+      "rows": [
+        { "title": "Un equipo chico de ingenieros senior.", "body": "6+ años de experiencia en ingeniería como mínimo, varios desde roles staff/principal en scale-ups y compañías de infra. No subcontratamos el trabajo que envía a producción." },
+        { "title": "ADN de product company.", "body": "Construimos productos que llegaron a miles de usuarios. Llevamos esa disciplina a engagements de cliente: rollouts en shadow, replay, observabilidad, monitoreo de drift." },
+        { "title": "Un punto de contacto, técnico desde el día uno.", "body": "Sin project managers traduciendo entre vos y el motor. El ingeniero que construye el sistema es el mismo que está en la call." }
+      ]
+    },
+    "howWeWork": {
+      "eyebrow": "02 // CÓMO TRABAJAMOS",
+      "headline": "Cómo trabajamos.",
+      "items": [
+        { "n": "01", "title": "Objetivo de 4 semanas hasta la primera decisión en producción.", "body": "Diseñamos para validación en shadow en semana 2-3, canary en semana 4. Si la arquitectura no lo hace alcanzable, te lo decimos antes de firmar contrato." },
+        { "n": "02", "title": "Modo shadow por default.", "body": "Los motores nuevos corren al lado de los sistemas existentes durante 1-3 semanas antes de que el tráfico se conmute. Las decisiones se loguean pero no se ejecutan. Comparamos y tuneamos." },
+        { "n": "03", "title": "Revisión mensual de arquitectura con el cliente.", "body": "Una vez en vivo, revisión recurrente de 60 minutos con tu liderazgo de ingeniería. Llevamos las métricas. Cancelable cuando quieras." },
+        { "n": "04", "title": "Transferencia completa de IP al finalizar.", "body": "Código, infra-as-code, runbooks, datasets de eval — son tuyos. No estamos en el negocio del lock-in." }
+      ]
+    },
+    "byTheNumbers": {
+      "eyebrow": "03 // EN NÚMEROS",
+      "headline": "Lo que el equipo envió a producción.",
+      "stats": [
+        { "value": "40+", "label": "años colectivos de ingeniería en producción" },
+        { "value": "5", "label": "lenguajes en los que enviamos a producción (Rust, TS, Go, Python, Kotlin)" },
+        { "value": "12", "label": "motores en producción desplegados en 3 regiones" }
+      ],
+      "footnote": "Cifras ilustrativas basadas en experiencia acumulada del equipo y engagements activos."
+    }
+  },
+  "Demo": {
+    "metaTitle": "Demo interactivo",
+    "metaDescription": "Describí un problema de negocio en lenguaje natural. Mirá el sistema de decisión que Hiram construiría para vos.",
+    "eyebrow": "DEMO INTERACTIVO",
+    "headline": "Describí el problema. Llevate el sistema.",
+    "lede": "El mismo motor que corre en el homepage, con más espacio para pensar. Inputs de más de 1.500 caracteres se truncan. Cada request está rate-limited; si llegás al cap, hablanos."
+  },
+  "Contact": {
+    "metaTitle": "Contacto",
+    "metaDescription": "Contanos tu volumen de eventos, tu latencia de decisión y qué te está bloqueando. Respondemos dentro de 2 días hábiles y te decimos si somos el encaje correcto — o quién lo es.",
+    "eyebrow": "CONTACTO",
+    "headline": "Empezá una conversación.",
+    "lede": "Contanos tu volumen de eventos, tu latencia de decisión actual y qué te está bloqueando. Te decimos si somos el encaje correcto — o quién lo es.",
+    "nextSteps": "QUÉ PASA DESPUÉS",
+    "steps": [
+      "Leemos tu formulario dentro de 2 días hábiles. Humano real, no un trigger de CRM.",
+      "Si encaja, proponemos una call de arquitectura de 45 minutos — sin slides.",
+      "Si no encaja, te decimos por qué y te referimos a alguien que sí encaje."
+    ],
+    "trust": "RECHAZAMOS ~60% DE LO QUE NOS LLEGA.",
+    "form": {
+      "section1": "01 // QUIÉN SOS",
+      "section2": "02 // EL PROBLEMA",
+      "section3": "03 // FILTRO DE ENCAJE",
+      "section4": "04 // CUALQUIER OTRA COSA",
+      "name": "Nombre completo",
+      "email": "Email de trabajo",
+      "company": "Compañía",
+      "role": "Rol",
+      "rolePlaceholder": "Elegí tu rol",
+      "roles": {
+        "engineering": "Liderazgo de ingeniería",
+        "product": "Producto",
+        "data_ml": "Data / ML",
+        "founder_clevel": "Fundador / C-level",
+        "other": "Otro"
+      },
+      "problem": "¿Qué problema querés resolver?",
+      "problemPlaceholder": "ej. Nuestro equipo de fraude revisa manualmente ~3k transacciones/día y la tasa de falsos positivos está matando la CX.",
+      "stage": "¿En qué punto del camino estás?",
+      "stagePlaceholder": "Elegí etapa",
+      "stages": {
+        "exploring": "Explorando — todavía sin sistema",
+        "building_internal": "Construyendo interno — trabados o lentos",
+        "live_needs_scale": "Sistema vivo — necesita escalar o ser reconstruido",
+        "just_curious": "Solo curiosidad"
+      },
+      "eventVolume": "Volumen actual de eventos",
+      "eventVolumePlaceholder": "Elegí volumen",
+      "eventVolumes": {
+        "lt_100k": "< 100k eventos/día",
+        "100k_1m": "100k – 1M eventos/día",
+        "1m_10m": "1M – 10M eventos/día",
+        "10m_100m": "10M – 100M eventos/día",
+        "gt_100m": "> 100M eventos/día",
+        "unknown": "No sé / todavía sin eventos"
+      },
+      "timeline": "Timeline",
+      "timelinePlaceholder": "Elegí timeline",
+      "timelines": {
+        "urgent": "< 1 mes (urgente)",
+        "1_3_months": "1–3 meses",
+        "3_6_months": "3–6 meses",
+        "6_plus": "6+ meses / estratégico"
+      },
+      "budget": "Bracket de presupuesto",
+      "budgetPlaceholder": "Elegí presupuesto",
+      "budgets": {
+        "lt_30k": "< 30k EUR",
+        "30_80k": "30k – 80k EUR",
+        "80_200k": "80k – 200k EUR",
+        "200k_plus": "200k+ EUR",
+        "unknown": "Todavía no sé"
+      },
+      "budgetMicrocopy": "Lo preguntamos porque no somos el encaje correcto debajo de ~30k EUR. Preferimos decírtelo ahora antes que perderte la semana.",
+      "source": "¿Cómo nos conociste?",
+      "notes": "Algo más que quieras agregar",
+      "notesPlaceholder": "Opcional",
+      "submit": "Enviar",
+      "submitting": "Enviando…",
+      "submitFooter": "Respondemos dentro de 2 días hábiles.",
+      "successHeadline": "Recibido.",
+      "successBody": "Leemos cada formulario dentro de 2 días hábiles. Si no recibís respuesta, tu filtro hizo sonar la campana — chequeá tu email.",
+      "payloadHeader": "REQUEST_PAYLOAD",
+      "payloadFooter": "Se actualiza mientras escribís",
+      "errorGeneric": "Algo salió mal. Intentá de nuevo.",
+      "errorRequired": "Requerido",
+      "errorEmail": "Usá un email de trabajo válido.",
+      "errorMin": "Demasiado corto",
+      "errorMax": "Demasiado largo"
+    }
+  },
+  "CaseStudies": {
+    "metaTitle": "Casos",
+    "metaDescription": "Sistemas de decisión anonimizados enviados a producción para operadores telco, fintech y retail. Arquitecturas reales, métricas reales.",
+    "eyebrow": "CASOS",
+    "headline": "Sistemas enviados a producción.",
+    "lede": "Anonimizados a pedido del cliente. Las arquitecturas y métricas son reales. Datos de ejemplo — se reemplazan por engagements reales a medida que los clientes aprueban.",
+    "empty": "Todavía no hay casos publicados.",
+    "sampleBadge": "EJEMPLO",
+    "readCase": "Leer el caso →",
+    "back": "← Todos los casos",
+    "rolloutWeeks": "Rollout (semanas)",
+    "shadowWeeks": "Shadow (semanas)",
+    "team": "Equipo",
+    "languages": "Lenguajes",
+    "events": "Eventos",
+    "storage": "Storage",
+    "ml": "ML",
+    "infra": "Infra",
+    "previousCase": "Caso anterior",
+    "nextCase": "Siguiente caso",
+    "ctaTitle": "¿Tenés un problema parecido?",
+    "ctaBody": "Contanos tu volumen de eventos y qué te está bloqueando. Respondemos dentro de 2 días hábiles.",
+    "ctaButton": "Empezar una conversación"
+  },
+  "ProblemAnalyzer": {
+    "textareaPlaceholder": "Describí un problema de negocio. Cuanto más afilado el input, más afilado el sistema.",
+    "submit": "Analizar problema",
+    "submitting": "Analizando…",
+    "stop": "Parar",
+    "tooShort": "Describí el problema en al menos 20 caracteres.",
+    "tooLong": "Mantenelo bajo 1500 caracteres.",
+    "genericError": "Algo salió mal. Intentá de nuevo.",
+    "section1": "01 // DIAGNÓSTICO",
+    "section2": "02 // SISTEMA SUGERIDO",
+    "section3": "03 // DECISIÓN DE EJEMPLO",
+    "section4": "04 // IMPACTO ESTIMADO",
+    "confidence": "CONFIANZA",
+    "eventsCaptured": "EVENTOS CAPTURADOS",
+    "decisionEngine": "MOTOR DE DECISIÓN",
+    "actionsTriggered": "ACCIONES DISPARADAS",
+    "effort": "ESFUERZO",
+    "impact": "IMPACTO",
+    "footer": "POWERED BY CLAUDE HAIKU 4.5 — MISMA DISCIPLINA DE PROMPTING QUE LLEVAMOS A PRODUCCIÓN",
+    "openFullDemo": "ABRIR DEMO COMPLETO →",
+    "contactCta": "CONTACTO →",
+    "seedChips": [
+      "30% de drop-off en checkout en Brasil durante horas pico.",
+      "No sabemos qué leads valen el tiempo de un sales rep.",
+      "Los reembolsos pican los lunes y no sabemos por qué.",
+      "El equipo de fraude está saturado; el motor de reglas necesita tuning."
+    ]
+  },
+  "StreamedSection": {
+    "waiting": "Esperando input.",
+    "validationError": "El output no validó. Intentá de nuevo."
+  },
+  "LiveSimulation": {
+    "label": "decision_engine.ts // en vivo",
+    "inFlight": "en vuelo",
+    "reducedMotion": "decision_engine.ts // animación deshabilitada por la configuración del sistema",
+    "feedHeader": "TELEMETRÍA · FEED EN VIVO",
+    "feedSubLabel": "Eventos sintéticos · ruteados por el motor demo",
+    "decisionsLabel": "DECISIONES",
+    "uptimeLabel": "UPTIME"
+  },
+  "NotFound": {
+    "code": "404 // DECISION_NOT_FOUND",
+    "headline": "El motor no devolvió match para esta ruta.",
+    "body": "El path solicitado no matcheó ninguna regla compilada. Cayendo al home.",
+    "back": "VOLVER AL INICIO →",
+    "payloadHeader": "engine.response",
+    "payloadVerdict": "route_not_matched",
+    "payloadAction": "fallback_to_home"
+  }
+}

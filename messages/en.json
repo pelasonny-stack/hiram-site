@@ -1,0 +1,424 @@
+{
+  "Common": {
+    "rights": "All rights reserved.",
+    "builtWith": "BUILT WITH NEXT.JS · DEPLOYED ON VERCEL",
+    "respondWithin": "WE RESPOND WITHIN 2 BUSINESS DAYS · WE TURN DOWN ~60% OF INBOUND — USUALLY A FIT PROBLEM, NOT A BUDGET PROBLEM."
+  },
+  "Nav": {
+    "capabilities": "Capabilities",
+    "caseStudies": "Case studies",
+    "demo": "Demo",
+    "about": "About",
+    "contact": "Contact",
+    "toggleMenu": "Toggle menu",
+    "homeLabel": "Hiram — home"
+  },
+  "Footer": {
+    "tagline": "Decision systems for teams that ship.",
+    "product": "Product",
+    "company": "Company",
+    "connect": "Connect",
+    "decisionEngines": "Decision Engines",
+    "aiQueryLayer": "AI Query Layer",
+    "eventInfrastructure": "Event Infrastructure",
+    "interactiveDemo": "Interactive Demo",
+    "statusPrefix": "STATUS",
+    "statusValue": "ALL_SYSTEMS_NORMAL",
+    "version": "v0.1.0",
+    "utcLabel": "UTC",
+    "signOff": "Built by humans who write Rust on weekends."
+  },
+  "ThemeToggle": {
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme",
+    "toggle": "Toggle theme"
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "es": "Español"
+  },
+  "Home": {
+    "metaTitle": "Hiram — Decision systems that turn data into revenue",
+    "metaDescription": "Real-time decision engines, AI query infrastructure, and event-driven systems shipped to production.",
+    "hero": {
+      "eyebrow": "HIRAM // DECISION SYSTEMS",
+      "headline": "Systems that turn data into automated decisions.",
+      "subhead": "We build the layer between your events and your business outcomes. Real-time decision engines, AI query infrastructure, and event-driven architectures that replace dashboards and manual ops with software that decides.",
+      "ctaPrimary": "See a live decision engine",
+      "ctaSecondary": "Read case studies",
+      "trust": "SHIPPED IN PRODUCTION FOR TELCO, FINTECH, AND RETAIL OPERATORS HANDLING 10M+ EVENTS/DAY.",
+      "telemetry": [
+        { "label": "STATUS", "value": "LIVE", "live": true },
+        { "label": "EVENTS/DAY", "value": "50M+" },
+        { "label": "P99 LATENCY", "value": "<80ms" },
+        { "label": "STACK", "value": "decision_engines.ts" }
+      ]
+    },
+    "whatWeDo": {
+      "eyebrow": "01 // POSITION",
+      "headline": "We are not an agency. We build decision systems.",
+      "lede": "Most teams don't need another dashboard. They need software that takes an event, applies the right logic, and triggers the right action — without a human in the loop. That's what we build, and that's all we build.",
+      "rows": [
+        {
+          "title": "Decision engines, not workflow builders.",
+          "body": "You bring the rules, the constraints, and the SLAs. We build the engine that runs them deterministically at scale, with full audit trails and shadow-mode rollouts."
+        },
+        {
+          "title": "AI where it makes the call, not where it makes a demo.",
+          "body": "LLMs and ML models embedded inside the decision path — not bolted onto a chat window. Query layers over your operational data so analysts and systems get answers in seconds."
+        },
+        {
+          "title": "Event infrastructure that survives Monday morning.",
+          "body": "Kafka, Redpanda, Kinesis, NATS — we design the topology, the schemas, the consumers, and the dead-letter strategy. So when volume spikes, nothing silently drops."
+        }
+      ]
+    },
+    "proof": {
+      "eyebrow": "02 // PROOF",
+      "headline": "Numbers from production, not from a pitch deck.",
+      "stats": [
+        { "value": "50M+", "label": "events/day processed across active client engines" },
+        { "value": "<80ms", "label": "p99 decision latency on real-time fraud-scoring engine" },
+        { "value": "4 weeks", "label": "from contract to first decision in production, typical" }
+      ],
+      "footnote": "Sample figures based on production engagements. Anonymized case studies below."
+    },
+    "demo": {
+      "eyebrow": "03 // SEE IT RUN",
+      "headline": "Describe the problem. Get the system.",
+      "lede": "Plain-English business problem in. Diagnosis, suggested system, an example decision rule with a real JSON payload, and an effort/impact bracket out. Same prompt discipline we ship to production."
+    },
+    "capabilities": {
+      "eyebrow": "04 // CAPABILITIES",
+      "headline": "Three things, done well.",
+      "cards": [
+        {
+          "title": "Decision Engines",
+          "body": "Deterministic rule engines, ML-scored decisions, hybrid pipelines. Versioned rules, shadow deploys, full replay against historical events.",
+          "bullets": ["RULE COMPILATION", "SHADOW + CANARY MODES", "DECISION REPLAY & AUDIT"]
+        },
+        {
+          "title": "AI Query Layer",
+          "body": "Natural-language queries over your operational data, with structured outputs your systems can act on. Not a chatbot — an API.",
+          "bullets": ["SCHEMA-AWARE PROMPTING", "STRUCTURED OUTPUT CONTRACTS", "EVAL HARNESS PER QUERY TYPE"]
+        },
+        {
+          "title": "Event Infrastructure",
+          "body": "Topologies, schemas, consumers, DLQs. Kafka, Redpanda, Kinesis, NATS. We pick the boring tool when boring is correct.",
+          "bullets": ["SCHEMA REGISTRY DISCIPLINE", "EXACTLY-ONCE WHERE IT MATTERS", "BACKPRESSURE BY DESIGN"]
+        }
+      ],
+      "cardCta": "How we build them →"
+    },
+    "caseStudiesPreview": {
+      "eyebrow": "05 // SHIPPED",
+      "headline": "Systems running in production right now.",
+      "lede": "Anonymized at the client's request. The architectures and metrics are real.",
+      "all": "ALL CASE STUDIES →",
+      "sampleBadge": "SAMPLE",
+      "readCase": "Read the case →",
+      "cards": [
+        {
+          "slug": "telco-latam-fraud",
+          "title": "Real-time fraud scoring for a LATAM telco",
+          "summary": "Replaced a legacy rule pack with a hybrid Rust engine. p99 latency 480ms → 80ms, false positives down 23%.",
+          "metrics": "50M/DAY · <80MS P99 · -23% FP"
+        },
+        {
+          "slug": "fintech-eu-credit",
+          "title": "Credit pre-approval engine for an EU fintech",
+          "summary": "Replaced a 14-step manual review with a hybrid ML+rules engine. Decision time fell from 36h to 90s.",
+          "metrics": "36H → 90S · 4-WEEK ROLLOUT · SHADOW VALIDATED"
+        },
+        {
+          "slug": "retail-na-pricing",
+          "title": "Dynamic pricing engine for a NA retailer",
+          "summary": "Hourly price decisions across 80k SKUs, driven by competitor signals and inventory pressure. +6.8% margin in 90 days.",
+          "metrics": "80K SKUS · HOURLY · +6.8% MARGIN"
+        }
+      ]
+    },
+    "finalCta": {
+      "headline": "If you have events, we can build the system that decides on them.",
+      "lede": "Tell us your event volume, your current decision latency, and what's blocking you. We'll tell you whether we're the right fit — or who is.",
+      "ctaPrimary": "Start a conversation",
+      "ctaSecondary": "See the full demo →"
+    }
+  },
+  "Capabilities": {
+    "metaTitle": "Capabilities",
+    "metaDescription": "Decision engines, AI query layers, and event infrastructure. The three components Hiram builds — and how we build them.",
+    "hero": {
+      "eyebrow": "CAPABILITIES",
+      "headline": "Three things, done well.",
+      "lede": "Every decision system Hiram ships is some combination of the same three components: a decision engine that runs your business logic, an AI query layer that turns operational data into structured answers, and event infrastructure that doesn't lose messages. We don't build dashboards, we don't build chatbots, and we don't take on work that fits neither category."
+    },
+    "toc": [
+      { "num": "01", "label": "Decision Engines" },
+      { "num": "02", "label": "AI Query Layer" },
+      { "num": "03", "label": "Event Infrastructure" }
+    ],
+    "howItWorks": "HOW IT WORKS",
+    "whenYouNeedThis": "WHEN YOU NEED THIS",
+    "decisionEngines": {
+      "eyebrow": "01 // DECISION ENGINES",
+      "headline": "The engine layer between your events and your business logic.",
+      "lede": "Every operational team eventually accumulates rules: approve this transaction, throttle that customer, route this case to a human. They live in spreadsheets, in Slack threads, in three-thousand-line if-statements buried in the API. A decision engine is the dedicated software that owns those rules — runs them deterministically, versions them like code, and gives you a replay trail when someone asks why a customer got the answer they got.",
+      "items": [
+        { "title": "Rule compilation", "body": "Rules authored in a typed DSL or YAML, compiled to a deterministic decision graph. No interpretation at request time — the engine evaluates a compiled artifact." },
+        { "title": "Hybrid ML + rules pipelines", "body": "Models score features, rules gate the action. Score thresholds, override rules, and policy checks live alongside the model — not downstream of it." },
+        { "title": "Shadow + canary modes", "body": "Every new rule version runs in shadow against live traffic before it owns a single decision. Diff reports per cohort before promotion, canary by tenant or percentage when promoted." },
+        { "title": "Decision replay & audit", "body": "Every decision keeps the inputs, the rule version, the model version, and the path through the graph. Replay any decision against any past or future rule set." }
+      ],
+      "comparisonIntro": "Most teams reach for a workflow tool, a BPM platform, or a hand-rolled service. Each falls short on at least one axis that matters when decisions are revenue-impacting.",
+      "comparisonHeaders": ["", "Deterministic", "Auditable replay", "Sub-100ms p99", "Versioned rules"],
+      "comparisonRows": [
+        "Workflow tools (n8n, Temporal)",
+        "Hand-rolled service",
+        "BPM platforms",
+        "Hiram decision engine"
+      ]
+    },
+    "aiQueryLayer": {
+      "eyebrow": "02 // AI QUERY LAYER",
+      "headline": "Ask your operational data a question. Get a structured answer your system can act on.",
+      "lede": "Most AI-over-data products end at a chat window. We end at an API. Same LLM under the hood, but the contract is a typed object your downstream systems can consume — not a paragraph a human has to interpret. Schema-aware prompts, output validation, eval harnesses, and explicit fallback paths.",
+      "items": [
+        { "title": "Schema-aware prompting", "body": "The model sees your data shape (table schemas, event shapes, business glossary) at request time. No hallucinated columns." },
+        { "title": "Structured output contracts", "body": "Every query type has a typed response schema (Zod / JSON Schema). Outputs are validated, retried on failure, surfaced as typed errors." },
+        { "title": "Eval harness per query type", "body": "We build a small golden dataset per query type and run it on every prompt change. CI fails on regressions you can see, before they ship." },
+        { "title": "Fallback paths and guardrails", "body": "Rate limits, timeouts, deterministic fallbacks. The system degrades gracefully when the model is slow or wrong." }
+      ],
+      "limitsTitle": "WHAT WE DON'T LET LLMS DECIDE",
+      "limits": [
+        "Final authorization on irreversible actions (charges, terminations, payouts).",
+        "Anything regulated without an explicit rule overlay (credit decisions, refusal of service, account closure).",
+        "Anything where the cost of a wrong answer exceeds the cost of asking a human."
+      ]
+    },
+    "eventInfrastructure": {
+      "eyebrow": "03 // EVENT INFRASTRUCTURE",
+      "headline": "Event-driven systems that don't silently drop messages on Monday morning.",
+      "lede": "The decision engine is only as good as the event stream feeding it. We design the topology, the schemas, the consumers, and the failure-mode behavior. We pick the boring tool when boring is correct.",
+      "toolingTitle": "TOOLING WE PICK AND WHEN",
+      "tooling": [
+        { "title": "Kafka", "body": "When you have a platform team that already operates it, or you need the broadest connector ecosystem and tools you'll find on Stack Overflow at 2am." },
+        { "title": "Redpanda", "body": "When you want the Kafka API without ZooKeeper / KRaft ops, lower latency, and a single binary. Good default for greenfield." },
+        { "title": "Kinesis", "body": "When you're already deep in AWS and the tradeoffs (ordered shards, throughput-per-shard math) match your access patterns." },
+        { "title": "NATS / JetStream", "body": "When you want light ops, request-reply patterns, and JetStream gives you the durability + ordering you need." }
+      ],
+      "alwaysTitle": "WHAT WE ALWAYS DESIGN FOR",
+      "always": [
+        { "title": "Schema registry discipline", "body": "Every event has a versioned schema, breaking changes go through a contract review. Consumers fail loudly on incompatible payloads, never silently." },
+        { "title": "Exactly-once where it matters", "body": "At-least-once everywhere else. Idempotency keys on the action layer make the difference visible to consumers." },
+        { "title": "Backpressure by design", "body": "Producers slow down when consumers can't keep up. No unbounded queues. No surprise bills." },
+        { "title": "DLQ + replay strategy from day one", "body": "Failed events land in a dead-letter topic with original payload + failure context. Replay tooling is part of the deliverable, not a future ticket." }
+      ]
+    }
+  },
+  "About": {
+    "metaTitle": "About",
+    "metaDescription": "Hiram builds decision systems. A small team of senior engineers with product-company DNA. One technical point of contact, full IP transfer on completion.",
+    "hero": {
+      "eyebrow": "ABOUT",
+      "headline": "Hiram builds decision systems. That's the whole company.",
+      "lede": "Small team of senior engineers. Product-company DNA. No agency-style account managers. Single technical point of contact from kickoff to handoff."
+    },
+    "whatWeAre": {
+      "eyebrow": "01 // WHAT WE ARE",
+      "headline": "What we are.",
+      "rows": [
+        { "title": "A small team of senior engineers.", "body": "6+ years engineering experience minimum, several from staff/principal roles at scale-ups and infra companies. We don't subcontract the work that ships." },
+        { "title": "Product-company DNA.", "body": "We've built products that ship to thousands of users. We bring that discipline to client engagements: shadow rollouts, replay, observability, drift monitoring." },
+        { "title": "One point of contact, technical from day one.", "body": "No project managers translating between you and the engine. The engineer building the system is the one in the call." }
+      ]
+    },
+    "howWeWork": {
+      "eyebrow": "02 // HOW WE WORK",
+      "headline": "How we work.",
+      "items": [
+        { "n": "01", "title": "4-week target to first decision in production.", "body": "We design for shadow-mode validation in week 2-3, canary in week 4. If the architecture doesn't make that achievable, we tell you before contract." },
+        { "n": "02", "title": "Shadow-mode by default.", "body": "New engines run alongside existing systems for 1-3 weeks before traffic flips. Decisions are logged but not enacted. We compare and tune." },
+        { "n": "03", "title": "Monthly architecture review with the client.", "body": "Once live, a recurring 60-minute review with your engineering leadership. We bring the metrics. Cancel any time." },
+        { "n": "04", "title": "Full IP transfer on completion.", "body": "Code, infra-as-code, runbooks, eval datasets — yours. We're not in the lock-in business." }
+      ]
+    },
+    "byTheNumbers": {
+      "eyebrow": "03 // BY THE NUMBERS",
+      "headline": "What the team has shipped.",
+      "stats": [
+        { "value": "40+", "label": "years collective production engineering experience" },
+        { "value": "5", "label": "languages we ship in (Rust, TS, Go, Python, Kotlin)" },
+        { "value": "12", "label": "production engines deployed across 3 regions" }
+      ],
+      "footnote": "Illustrative figures based on cumulative team experience and active engagements."
+    }
+  },
+  "Demo": {
+    "metaTitle": "Interactive demo",
+    "metaDescription": "Describe a business problem in plain English. See the decision system Hiram would build for you.",
+    "eyebrow": "INTERACTIVE DEMO",
+    "headline": "Describe the problem. Get the system.",
+    "lede": "Same engine that runs on the homepage, with more room to think. Inputs over 1,500 characters get truncated. Each request is rate-limited; if you hit the cap, talk to us."
+  },
+  "Contact": {
+    "metaTitle": "Contact",
+    "metaDescription": "Tell us your event volume, your decision latency, and what's blocking you. We respond within 2 business days and tell you whether we're the right fit — or who is.",
+    "eyebrow": "CONTACT",
+    "headline": "Start a conversation.",
+    "lede": "Tell us your event volume, your current decision latency, and what's blocking you. We'll tell you whether we're the right fit — or who is.",
+    "nextSteps": "WHAT HAPPENS NEXT",
+    "steps": [
+      "We read your form within 2 business days. Real human, not a CRM trigger.",
+      "If it's a fit, we propose a 45-minute architecture call — no slides.",
+      "If it's not, we tell you why and refer you to someone who fits."
+    ],
+    "trust": "WE TURN DOWN ~60% OF INBOUND.",
+    "form": {
+      "section1": "01 // WHO YOU ARE",
+      "section2": "02 // THE PROBLEM",
+      "section3": "03 // FIT FILTER",
+      "section4": "04 // ANYTHING ELSE",
+      "name": "Full name",
+      "email": "Work email",
+      "company": "Company",
+      "role": "Role",
+      "rolePlaceholder": "Select your role",
+      "roles": {
+        "engineering": "Engineering leadership",
+        "product": "Product",
+        "data_ml": "Data / ML",
+        "founder_clevel": "Founder / C-level",
+        "other": "Other"
+      },
+      "problem": "What problem are you trying to solve?",
+      "problemPlaceholder": "e.g. Our fraud team manually reviews ~3k transactions/day and the false-positive rate is killing CX.",
+      "stage": "Where are you in the journey?",
+      "stagePlaceholder": "Select stage",
+      "stages": {
+        "exploring": "Exploring — no system yet",
+        "building_internal": "Building internally — stuck or slow",
+        "live_needs_scale": "Live system — needs to scale or be rebuilt",
+        "just_curious": "Just curious"
+      },
+      "eventVolume": "Current event volume",
+      "eventVolumePlaceholder": "Select event volume",
+      "eventVolumes": {
+        "lt_100k": "< 100k events/day",
+        "100k_1m": "100k – 1M events/day",
+        "1m_10m": "1M – 10M events/day",
+        "10m_100m": "10M – 100M events/day",
+        "gt_100m": "> 100M events/day",
+        "unknown": "Not sure / no events yet"
+      },
+      "timeline": "Timeline",
+      "timelinePlaceholder": "Select timeline",
+      "timelines": {
+        "urgent": "< 1 month (urgent)",
+        "1_3_months": "1–3 months",
+        "3_6_months": "3–6 months",
+        "6_plus": "6+ months / strategic"
+      },
+      "budget": "Budget bracket",
+      "budgetPlaceholder": "Select budget",
+      "budgets": {
+        "lt_30k": "< 30k EUR",
+        "30_80k": "30k – 80k EUR",
+        "80_200k": "80k – 200k EUR",
+        "200k_plus": "200k+ EUR",
+        "unknown": "Don't know yet"
+      },
+      "budgetMicrocopy": "Asked because we are not the right fit under ~30k EUR. We'd rather tell you now than waste your week.",
+      "source": "How did you hear about us?",
+      "notes": "Anything you want to add",
+      "notesPlaceholder": "Optional",
+      "submit": "Send",
+      "submitting": "Sending…",
+      "submitFooter": "We respond within 2 business days.",
+      "successHeadline": "Got it.",
+      "successBody": "We read every form within 2 business days. If you don't hear back, your filter rang the bell — check email.",
+      "payloadHeader": "REQUEST_PAYLOAD",
+      "payloadFooter": "Updates as you type",
+      "errorGeneric": "Something went wrong. Try again.",
+      "errorRequired": "Required",
+      "errorEmail": "Use a valid work email.",
+      "errorMin": "Too short",
+      "errorMax": "Too long"
+    }
+  },
+  "CaseStudies": {
+    "metaTitle": "Case studies",
+    "metaDescription": "Anonymized decision systems shipped to production for telco, fintech, and retail operators. Real architectures, real metrics.",
+    "eyebrow": "CASE STUDIES",
+    "headline": "Systems shipped to production.",
+    "lede": "Anonymized at the client's request. The architectures and metrics are real. Sample data — replaced with real engagements as clients approve.",
+    "empty": "No case studies published yet.",
+    "sampleBadge": "SAMPLE",
+    "readCase": "Read the case →",
+    "back": "← All case studies",
+    "rolloutWeeks": "Rollout (weeks)",
+    "shadowWeeks": "Shadow (weeks)",
+    "team": "Team",
+    "languages": "Languages",
+    "events": "Events",
+    "storage": "Storage",
+    "ml": "ML",
+    "infra": "Infra",
+    "previousCase": "Previous case",
+    "nextCase": "Next case",
+    "ctaTitle": "Have a similar problem?",
+    "ctaBody": "Tell us your event volume and what's blocking you. We respond within 2 business days.",
+    "ctaButton": "Start a conversation"
+  },
+  "ProblemAnalyzer": {
+    "textareaPlaceholder": "Describe a business problem. The sharper the input, the sharper the system.",
+    "submit": "Analyze problem",
+    "submitting": "Analyzing…",
+    "stop": "Stop",
+    "tooShort": "Describe the problem in at least 20 characters.",
+    "tooLong": "Keep it under 1500 characters.",
+    "genericError": "Something went wrong. Try again.",
+    "section1": "01 // DIAGNOSIS",
+    "section2": "02 // SUGGESTED SYSTEM",
+    "section3": "03 // EXAMPLE DECISION",
+    "section4": "04 // ESTIMATED IMPACT",
+    "confidence": "CONFIDENCE",
+    "eventsCaptured": "EVENTS CAPTURED",
+    "decisionEngine": "DECISION ENGINE",
+    "actionsTriggered": "ACTIONS TRIGGERED",
+    "effort": "EFFORT",
+    "impact": "IMPACT",
+    "footer": "POWERED BY CLAUDE HAIKU 4.5 — SAME PROMPT DISCIPLINE WE SHIP TO PRODUCTION",
+    "openFullDemo": "OPEN FULL DEMO →",
+    "contactCta": "CONTACT →",
+    "seedChips": [
+      "30% checkout drop-off in Brazil during peak hours.",
+      "We can't tell which leads are worth a sales rep's time.",
+      "Refunds spike on Mondays and we don't know why.",
+      "Fraud team is overwhelmed; rules engine needs tuning."
+    ]
+  },
+  "StreamedSection": {
+    "waiting": "Waiting for input.",
+    "validationError": "Output failed to validate. Try again."
+  },
+  "LiveSimulation": {
+    "label": "decision_engine.ts // live",
+    "inFlight": "in-flight",
+    "reducedMotion": "decision_engine.ts // animation disabled by your system settings",
+    "feedHeader": "TELEMETRY · LIVE FEED",
+    "feedSubLabel": "Synthetic events · routed by demo engine",
+    "decisionsLabel": "DECISIONS",
+    "uptimeLabel": "UPTIME"
+  },
+  "NotFound": {
+    "code": "404 // DECISION_NOT_FOUND",
+    "headline": "Engine returned no match for this route.",
+    "body": "The path you requested did not match any compiled rule. Falling back to home.",
+    "back": "BACK TO HOME →",
+    "payloadHeader": "engine.response",
+    "payloadVerdict": "route_not_matched",
+    "payloadAction": "fallback_to_home"
+  }
+}

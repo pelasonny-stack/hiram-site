@@ -1,0 +1,90 @@
+---
+title: "Real-time fraud scoring for a LATAM telco"
+slug: "telco-latam-fraud"
+publishedAt: "2026-02-12"
+industry: "Telco"
+region: "LATAM"
+context: "Replaced a legacy rule pack on a six-figure-MAU prepaid network. Fraud team was drowning in false positives while real abuse slipped through during weekend traffic spikes."
+system: "Hybrid Rust scoring engine: deterministic rules first, ONNX-exported XGBoost model second, decision emitted to Kafka. Shadow mode for four weeks against live traffic, then canary, then full rollout."
+stack:
+  languages: ["Rust", "Python"]
+  events: ["Kafka", "Schema Registry (Avro)"]
+  storage: ["ScyllaDB", "Redis"]
+  ml: ["XGBoost", "ONNX Runtime"]
+  infra: ["Kubernetes (EKS)", "Terraform"]
+timeline:
+  rolloutWeeks: 6
+  shadowWeeks: 4
+team: "2 Hiram engineers + 1 client data scientist"
+metrics:
+  - { label: "Events/day", value: "50M" }
+  - { label: "p99 decision latency", value: "<80ms" }
+  - { label: "False positives", value: "-23%" }
+outcome: "Cut p99 decision latency from 480ms to under 80ms while reducing false positives by 23% on the same recall envelope. The fraud team stopped fighting the queue and started writing new rules."
+sample: true
+seo:
+  description: "How we shipped a hybrid Rust + ONNX fraud scoring engine handling 50M events/day with sub-80ms p99 latency for a LATAM telco."
+---
+
+## Context
+
+The client was a prepaid mobile operator running a fraud detection stack stitched together over eight years. The pipeline was a Java service that pulled CDRs (call detail records) from a relational database every two minutes, ran them through a hand-tuned rule pack, and pushed alerts to a queue that analysts worked through during business hours. Three problems compounded.
+
+First, latency. The two-minute polling cycle meant fraud was usually committed and settled before the system noticed. Second, false positives. The rule pack had grown to over 400 conditions; nobody on the current team had written most of them, and turning any of them off was a political event. Third, weekend behavior. Volume on Friday and Saturday nights was 4-5x weekday average, and the polling-based architecture started lagging by hours, not minutes.
+
+The brief was narrow: real-time scoring on a stream of CDRs and recharge events, p99 below 100ms, with an honest reduction in false positives without losing recall on the high-cost fraud classes (SIM-box, IRSF, recharge fraud).
+
+## Constraints
+
+- **Data sovereignty.** All event data had to stay in-country. We picked an in-region cloud and built around it.
+- **Existing Kafka cluster.** The client had a Kafka deployment we were not allowed to replace, only consume from.
+- **No model training in production.** Compliance required model artifacts to be reviewed and signed before deployment. No online learning, no auto-retraining.
+- **Two-engineer team from our side, plus one client data scientist.** Anything we built had to be operable by the client's existing platform team after handover.
+- **Six-week budget**, with a hard deadline tied to a regulator audit window.
+
+## System
+
+The engine is a single Rust service deployed as a Kafka consumer group. It pulls CDR and recharge events off two topics, joins them against a per-subscriber state store in Redis (recent velocity counters, blocklist hits, geo deltas), and emits a decision back onto a `fraud.decisions.v1` topic.
+
+- **Rule layer first.** Deterministic rules compiled to a flat evaluator at startup. About 60 rules survived the migration; the rest were either dead, redundant, or moved into model features.
+- **Model layer second.** XGBoost trained offline on six months of labeled history, exported to ONNX. The Rust service runs ONNX Runtime in-process. Inference budget: 12ms p99.
+- **Decision contract.** Every decision carries the rule ids that fired, the model score, the feature vector hash, and the model version. Replayable end-to-end against any historical event window.
+
+```json
+{
+  "decision_id": "01HX9K5T7Y...",
+  "subscriber_id_hash": "b3f2...",
+  "event_ref": "cdr/2026-02-09T03:14:22Z/9912",
+  "score": 0.871,
+  "model_version": "fraud-xgb-2026-01",
+  "rules_fired": ["R042_VELOCITY_GEO", "R118_SIMBOX_PATTERN"],
+  "action": "BLOCK",
+  "explain": {
+    "top_features": ["calls_5m", "geo_jump_km", "recharge_count_24h"]
+  }
+}
+```
+
+## Stack
+
+- **Languages:** Rust (engine), Python (training, evaluation)
+- **Events:** Kafka with Avro schemas via Schema Registry
+- **Storage:** ScyllaDB for decision history, Redis for hot subscriber state
+- **ML:** XGBoost trained in Python, exported to ONNX, served in-process via ONNX Runtime
+- **Infra:** Kubernetes on EKS, Terraform for everything
+
+## Rollout
+
+Four weeks in shadow mode. The new engine consumed the live event stream and wrote its decisions to a parallel topic that no downstream system acted on. Daily diff reports compared its decisions against the legacy engine's, broken out by rule and by fraud class. We chased every disagreement.
+
+After shadow, two weeks of canary at 5%, 25%, then 100% of traffic. The fallback was simple: a feature flag flipped the action layer back to the legacy engine while the new one stayed running. We never had to use it, but we tested it twice in production during low-traffic windows.
+
+## Outcome
+
+By the end of week six the engine was the system of record. Volume settled around 50M events/day on weekdays and peaked around 70M on Saturday nights. p99 decision latency held under 80ms across the rollout, well inside the 100ms budget. False positives dropped 23% while keeping recall within 1.5 points of the legacy stack on the high-cost classes.
+
+The harder-to-quantify win was that the fraud team got their evenings back. The alert queue went from five-figure daily volume to mid-three-figure, and the analysts started writing new rules instead of triaging old ones.
+
+## What we'd do differently
+
+We underestimated how much time would go into Avro schema cleanup on the upstream topics. The client's events had been allowed to drift for years — optional fields that were really required, enums encoded as strings, timestamps in three different formats. Two weeks of the six went into normalizing the input contract before we could build cleanly on top of it. Next time we'd scope schema audit as an explicit deliverable up front instead of treating it as setup.

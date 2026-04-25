@@ -1,0 +1,94 @@
+---
+title: "Dynamic pricing engine for a NA retailer"
+slug: "retail-na-pricing"
+publishedAt: "2026-04-08"
+industry: "Retail"
+region: "NA"
+context: "A multi-category online retailer with 80k active SKUs, doing twice-weekly price updates by spreadsheet. Margin was leaking on category leaders that competitors were pricing more aggressively in real time."
+system: "Hourly pricing decisions per SKU, driven by competitor signals, inventory pressure, and a margin-floor policy. Idempotent action layer with 5-minute rollback guardrails."
+stack:
+  languages: ["Go", "Python"]
+  events: ["Kafka", "Redpanda"]
+  storage: ["ClickHouse", "PostgreSQL"]
+  ml: ["LightGBM (demand)", "Prophet (seasonality baseline)"]
+  infra: ["Kubernetes (EKS)", "Terraform"]
+timeline:
+  rolloutWeeks: 8
+  shadowWeeks: 4
+team: "3 Hiram engineers + 1 client merchandising lead + 1 client data engineer"
+metrics:
+  - { label: "SKUs priced", value: "80k" }
+  - { label: "Decision cadence", value: "Hourly" }
+  - { label: "Margin", value: "+6.8%" }
+outcome: "+6.8% blended gross margin in 90 days across the priced catalog. Hourly decisions on 80k SKUs with idempotent action emission and a five-minute rollback guardrail that has now been used in production three times without incident."
+sample: true
+seo:
+  description: "How we built an hourly dynamic pricing engine for 80k SKUs that lifted margin by 6.8% with safe, idempotent price actions and five-minute rollback guardrails."
+---
+
+## Context
+
+The retailer had grown organically into 80k active SKUs across home, hardware, and outdoor. Pricing was done by category managers in spreadsheets, refreshed twice a week against a screen-scrape of three competitor sites. The merchandising team knew they were leaving money on the table — for fast-moving categories the market moved faster than their cadence — but they were nervous about automation. Past attempts to wire up dynamic pricing had ended in a Black Friday incident where a misconfigured rule dropped a top-100 SKU to a third of its intended price for forty minutes.
+
+The brief was hourly pricing across the full catalog, with safety guardrails that would let the merchandising team sleep through the rollout.
+
+## Constraints
+
+- **Floor on every SKU.** Every price decision had to respect a per-SKU margin floor that the merchandising team owned. The engine could never violate it, ever, regardless of model output.
+- **No price oscillation.** Repeated up-down moves within a short window were a known source of customer complaints and trust damage. Any rule we shipped had to dampen oscillation.
+- **Action-layer idempotency.** The downstream commerce platform had partial failure modes; we had to make every price change safe to retry.
+- **Five-minute rollback.** From the moment a bad price hits production, the team needed to be able to revert it in five minutes or less, without engineering on-call.
+- **Eight weeks**, including building the upstream competitor-signal ingestion pipeline that did not exist yet.
+
+## System
+
+The engine runs as an hourly batch over Kafka with a streaming feature store. Three components in sequence.
+
+- **Competitor signal ingestion.** A scraper pool emits normalized observations onto a `competitor.prices.v1` topic. Late, missing, and conflicting signals are tolerated; we keep a rolling 24h window per SKU per competitor and trust the median.
+- **Price recommender.** A LightGBM demand model produces a price-elasticity estimate per SKU, combined with the current inventory pressure (days of cover) and the latest competitor median to produce a recommended price.
+- **Policy and action layer.** Deterministic. Clamps the recommendation against the margin floor, the no-oscillation window, and a maximum step size per hour. Emits an action event onto `pricing.actions.v1`.
+
+The action layer is the part the merchandising team cares about. Every action event carries an idempotency key, a TTL, and a reason record. The downstream commerce-platform consumer is built so that re-emitting the same key is a no-op. Rollback is a single signed event that flips a SKU to its baseline price and locks it for 24 hours.
+
+```json
+{
+  "action_id": "01HZA1...",
+  "sku": "OUT-7821",
+  "previous_price": 47.99,
+  "new_price": 44.99,
+  "floor": 42.50,
+  "competitor_median": 45.49,
+  "reason": {
+    "model_pd_lift": 0.071,
+    "inventory_days_cover": 12,
+    "no_oscillation_window_ok": true,
+    "step_size_clamped": false
+  },
+  "idempotency_key": "OUT-7821:2026-04-07T14:00Z",
+  "ttl_seconds": 3900
+}
+```
+
+## Stack
+
+- **Languages:** Go (engine, action layer), Python (modeling, backtesting)
+- **Events:** Redpanda for the action topic, Kafka for everything else (the client already had Kafka)
+- **Storage:** ClickHouse for the price/action history and the feature store, PostgreSQL for the policy table
+- **ML:** LightGBM demand model, Prophet for the seasonality baseline used in evaluation
+- **Infra:** EKS, Terraform
+
+## Rollout
+
+Four weeks in shadow. The engine produced recommendations for the entire catalog every hour and wrote them to a side topic that the commerce platform did not consume. Each morning the merchandising team got a diff report: top 200 recommendations, by absolute change and by category, with the reason record attached. We tuned the no-oscillation window and the step-size cap based on their feedback. The floor logic we did not tune; it was correct on day one and stayed correct.
+
+Production cutover happened in three slices, by category, over four weeks. The smallest category (about 4k SKUs) went first. Then a mid-size category. Then everything else. The five-minute rollback was tested in the first week of full production — a misconfigured floor for a single subcategory produced underpriced recommendations on roughly 200 SKUs, the merchandising lead noticed within twenty minutes, and the rollback button reverted them in under two. No customer-visible incident.
+
+## Outcome
+
+Blended gross margin across the priced catalog rose 6.8% over the 90 days following full cutover, measured against a holdout of 5k SKUs the merchandising team kept manually priced as a control. The control group's margin was flat over the same window. Per-SKU price oscillation, measured as up-down-up moves within 48 hours, dropped to under 0.4% of SKUs per day, well inside the merchandising team's tolerance.
+
+The rollback guardrail has now been used three times in production. None of the three were a customer-visible incident, because the team caught each one inside the five-minute window and reverted before any meaningful order volume hit the affected SKUs.
+
+## What we'd do differently
+
+The competitor signal ingestion was the riskiest part of the project and we treated it as setup. It deserved its own design phase. We rebuilt the scraper pool twice — once when the first design fell over on the long tail of low-traffic SKUs that competitors quoted inconsistently, and once when one of the three target sites changed its rendering and broke our parser silently. Both reworks happened during the rollout, which compressed everything else. Next time we would build and instrument the upstream pipeline first, prove it stable for two weeks, and only then build the engine on top of it.
