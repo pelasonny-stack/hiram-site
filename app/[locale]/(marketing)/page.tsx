@@ -99,22 +99,26 @@ function Hero() {
               </ScrollReveal>
             </div>
 
-            {/* RIGHT — MEGA ANCHOR */}
-            <div className="lg:col-span-5">
-              <ScrollReveal delay={200}>
-                <div className="flex flex-col items-end justify-end h-full pt-8 lg:pt-0">
-                  <div className="text-eyebrow text-foreground-subtle">
-                    {t("megaAnchor.label")}
+            {/* RIGHT — instrument readout panel */}
+            <div className="lg:col-span-5 lg:pt-12">
+              <ScrollReveal delay={280}>
+                <div className="corner-accent group relative overflow-hidden border border-border bg-background-elev/40 p-6 md:p-7">
+                  <div
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-px bg-accent/60"
+                  />
+                  <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-wider text-foreground-subtle">
+                    <span className="text-accent">{t("megaAnchor.label")}</span>
+                    <span className="pulse-dot" />
                   </div>
-                  <div className="mt-2 self-end">
+                  <div className="mt-5">
                     <AnimatedStat
                       value={t("megaAnchor.value")}
                       label=""
-                      valueClassName="text-display-massive text-right"
-                      className="!text-right"
+                      valueClassName="text-anchor text-accent"
                     />
                   </div>
-                  <div className="text-xs font-mono text-foreground-subtle mt-3 text-right max-w-[28ch]">
+                  <div className="mt-5 border-t border-border pt-3 text-[11px] font-mono text-foreground-subtle leading-relaxed">
                     {t("megaAnchor.caption")}
                   </div>
                 </div>
