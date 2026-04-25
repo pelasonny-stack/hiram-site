@@ -61,7 +61,7 @@ function Hero() {
                 </Eyebrow>
               </ScrollReveal>
               <ScrollReveal delay={120}>
-                <h1 className="text-display-mega max-w-[12ch] mt-5">
+                <h1 className="text-display max-w-[16ch] mt-5 break-words hyphens-auto">
                   {t("headline")}
                 </h1>
               </ScrollReveal>
