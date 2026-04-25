@@ -8,6 +8,8 @@
     "capabilities": "Capabilities",
     "caseStudies": "Case studies",
     "demo": "Demo",
+    "pricing": "Pricing",
+    "blog": "Blog",
     "about": "About",
     "contact": "Contact",
     "toggleMenu": "Toggle menu",
@@ -24,6 +26,11 @@
     "aiQueryLayer": "AI Query Layer",
     "eventInfrastructure": "Event Infrastructure",
     "interactiveDemo": "Interactive Demo",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "openSource": "Open source",
+    "license": "MIT License",
+    "github": "GitHub",
     "statusPrefix": "STATUS",
     "statusValue": "ALL_SYSTEMS_NORMAL",
     "version": "v0.1.0",
@@ -437,6 +444,125 @@
     "ctaTitle": "Have a similar problem?",
     "ctaBody": "Tell us your event volume and what's blocking you. We respond within 2 business days.",
     "ctaButton": "Start a conversation"
+  },
+  "TrustLogos": {
+    "label": "ENGAGEMENTS · ANONYMIZED",
+    "items": [
+      "TELCO_LATAM_A",
+      "FINTECH_EU_B",
+      "RETAIL_NA_C",
+      "LOGISTICS_EU_D",
+      "TELCO_NA_E",
+      "FINTECH_LATAM_F"
+    ],
+    "footnote": "Identities masked at the client's request. Architectures + metrics in case studies."
+  },
+  "DemoFunnelCta": {
+    "title": "Want this in production?",
+    "body": "The same engine, on your event stream, in your stack. Typical first decision shipped in 4 weeks.",
+    "primary": "Start a 45-min architecture call",
+    "secondary": "See pricing brackets →"
+  },
+  "Pricing": {
+    "metaTitle": "Pricing",
+    "metaDescription": "Three engagement tiers. Diagnostic, Build, Scale. Honest about who we are not the right fit for.",
+    "eyebrow": "ENGAGEMENT MODEL",
+    "headline": "Three tiers. Honest about each.",
+    "lede": "Fixed-price diagnostic, fixed-bracket build sprint, ongoing scale engagement. We tell you which fits before you sign.",
+    "tiers": [
+      {
+        "id": "diagnostic",
+        "marker": "01",
+        "name": "Diagnostic",
+        "summary": "Is your problem actually a decision-systems problem?",
+        "price": "from 8,000 EUR",
+        "duration": "1 week",
+        "deliverables": [
+          "Architecture sketch + event surface mapping",
+          "Decision rule audit (current + recommended)",
+          "Build vs. don't-build recommendation with rationale",
+          "If we recommend not building, we tell you who would"
+        ],
+        "fitFor": "You're not sure if a decision engine is the right answer.",
+        "cta": "Book a diagnostic"
+      },
+      {
+        "id": "build",
+        "marker": "02",
+        "name": "Build sprint",
+        "summary": "First decision in production, shadow-validated.",
+        "price": "from 38,000 EUR",
+        "duration": "4 weeks",
+        "deliverables": [
+          "End-to-end engine: events → rules → actions",
+          "Shadow-mode validation against your live traffic",
+          "Audit trail + replay tooling included",
+          "Full IP transfer + handoff documentation"
+        ],
+        "fitFor": "You have the events. You have the rules. You need the layer between.",
+        "cta": "Scope a build sprint",
+        "featured": true
+      },
+      {
+        "id": "scale",
+        "marker": "03",
+        "name": "Scale engagement",
+        "summary": "Ongoing partnership for engines under load.",
+        "price": "custom · monthly retainer",
+        "duration": "3+ months",
+        "deliverables": [
+          "Multi-engine roadmap (fraud, pricing, routing, etc.)",
+          "Monthly architecture review + drift monitoring",
+          "Embedded engineer — your team can ping ours direct",
+          "On-call rotation coverage for shipped engines"
+        ],
+        "fitFor": "You have engines live. They need to scale, evolve, or multiply.",
+        "cta": "Talk to us"
+      }
+    ],
+    "antiHeadline": "We are not the right fit if",
+    "antiItems": [
+      "You're under ~30k EUR — economics don't work for either side",
+      "You want a workflow tool (Zapier, n8n, Temporal) — those exist and are great",
+      "You need a chat interface as the primary product — we build APIs, not chat UIs",
+      "Your event volume is < 100k/day and not expected to grow — overkill for your scale",
+      "You need a long RFP process — we move fast or not at all"
+    ],
+    "footnote": "Brackets are starting points. Real scope estimated in the diagnostic call.",
+    "ctaTitle": "Ready to scope?",
+    "ctaBody": "30-minute fit call before any pricing conversation. We'll tell you on the call if it's worth scoping further."
+  },
+  "Blog": {
+    "metaTitle": "Engineering blog",
+    "metaDescription": "Deep technical posts on decision engines, event-driven architecture, and AI in production from the Hiram team.",
+    "eyebrow": "ENGINEERING BLOG",
+    "headline": "Notes from production.",
+    "lede": "Architecture decisions, post-mortems, and the trade-offs we made. Written by the engineers who shipped them.",
+    "empty": "No posts yet.",
+    "back": "← All posts",
+    "minRead": "min read",
+    "publishedOn": "Published",
+    "byLine": "By"
+  },
+  "AboutTeam": {
+    "eyebrow": "04 // TEAM",
+    "headline": "The engineers in the calls.",
+    "lede": "Replace these with real names + LinkedIns when ready. Editing instructions in components/marketing/team-card.tsx.",
+    "editHint": "EDIT THIS",
+    "members": [
+      {
+        "name": "[Founder name]",
+        "role": "Founding engineer · Decision systems",
+        "bio": "10+ years shipping production decision engines for telco and fintech. Previously [past role].",
+        "links": [{ "label": "LinkedIn", "href": "#" }, { "label": "GitHub", "href": "#" }]
+      },
+      {
+        "name": "[Engineer name]",
+        "role": "Engineer · Event infrastructure",
+        "bio": "Kafka + Redpanda + NATS in production. Previously [past role]. Writes Rust on weekends.",
+        "links": [{ "label": "LinkedIn", "href": "#" }, { "label": "GitHub", "href": "#" }]
+      }
+    ]
   },
   "ProblemAnalyzer": {
     "textareaPlaceholder": "Describe a business problem. The sharper the input, the sharper the system.",

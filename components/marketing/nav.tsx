@@ -12,11 +12,13 @@ import { CommandHint } from "./command-hint";
 import { ScrollProgressLine } from "./scroll-progress-line";
 import { cn } from "@/lib/utils";
 
-const NAV_KEYS = ["capabilities", "caseStudies", "demo", "about"] as const;
+const NAV_KEYS = ["capabilities", "caseStudies", "demo", "pricing", "blog", "about"] as const;
 const HREFS: Record<(typeof NAV_KEYS)[number], string> = {
   capabilities: "/capabilities",
   caseStudies: "/case-studies",
   demo: "/demo",
+  pricing: "/pricing",
+  blog: "/blog",
   about: "/about",
 };
 

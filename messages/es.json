@@ -8,6 +8,8 @@
     "capabilities": "Capacidades",
     "caseStudies": "Casos",
     "demo": "Demo",
+    "pricing": "Precios",
+    "blog": "Blog",
     "about": "Nosotros",
     "contact": "Contacto",
     "toggleMenu": "Abrir menú",
@@ -24,6 +26,11 @@
     "aiQueryLayer": "Capa de Consulta AI",
     "eventInfrastructure": "Infraestructura de Eventos",
     "interactiveDemo": "Demo Interactivo",
+    "pricing": "Precios",
+    "blog": "Blog",
+    "openSource": "Código abierto",
+    "license": "Licencia MIT",
+    "github": "GitHub",
     "statusPrefix": "ESTADO",
     "statusValue": "TODOS_LOS_SISTEMAS_NORMALES",
     "version": "v0.1.0",
@@ -437,6 +444,125 @@
     "ctaTitle": "¿Tenés un problema parecido?",
     "ctaBody": "Contanos tu volumen de eventos y qué te está bloqueando. Respondemos dentro de 2 días hábiles.",
     "ctaButton": "Empezar una conversación"
+  },
+  "TrustLogos": {
+    "label": "ENGAGEMENTS · ANONIMIZADOS",
+    "items": [
+      "TELCO_LATAM_A",
+      "FINTECH_EU_B",
+      "RETAIL_NA_C",
+      "LOGISTICS_EU_D",
+      "TELCO_NA_E",
+      "FINTECH_LATAM_F"
+    ],
+    "footnote": "Identidades enmascaradas a pedido del cliente. Arquitecturas + métricas en los casos."
+  },
+  "DemoFunnelCta": {
+    "title": "¿Lo querés en producción?",
+    "body": "El mismo motor, sobre tu stream de eventos, en tu stack. Primera decisión típicamente en 4 semanas.",
+    "primary": "Agendar call de arquitectura (45 min)",
+    "secondary": "Ver brackets de precios →"
+  },
+  "Pricing": {
+    "metaTitle": "Precios",
+    "metaDescription": "Tres tiers de engagement. Diagnostic, Build, Scale. Honestos sobre para quién no somos el encaje correcto.",
+    "eyebrow": "MODELO DE ENGAGEMENT",
+    "headline": "Tres tiers. Honestos en cada uno.",
+    "lede": "Diagnostic con precio fijo, sprint Build con bracket fijo, engagement Scale ongoing. Te decimos cuál encaja antes de que firmes.",
+    "tiers": [
+      {
+        "id": "diagnostic",
+        "marker": "01",
+        "name": "Diagnostic",
+        "summary": "¿Tu problema es realmente un problema de sistemas de decisión?",
+        "price": "desde 8.000 EUR",
+        "duration": "1 semana",
+        "deliverables": [
+          "Sketch de arquitectura + mapeo de event surface",
+          "Auditoría de reglas de decisión (actual + recomendado)",
+          "Recomendación build vs. don't-build con racional",
+          "Si recomendamos no construir, te decimos quién sí encaja"
+        ],
+        "fitFor": "No estás seguro de si un motor de decisión es la respuesta correcta.",
+        "cta": "Agendar diagnostic"
+      },
+      {
+        "id": "build",
+        "marker": "02",
+        "name": "Sprint Build",
+        "summary": "Primera decisión en producción, validada en shadow.",
+        "price": "desde 38.000 EUR",
+        "duration": "4 semanas",
+        "deliverables": [
+          "Motor end-to-end: eventos → reglas → acciones",
+          "Validación shadow-mode contra tu tráfico real",
+          "Audit trail + tooling de replay incluidos",
+          "Transferencia completa de IP + documentación de handoff"
+        ],
+        "fitFor": "Tenés los eventos. Tenés las reglas. Necesitás la capa del medio.",
+        "cta": "Scopear un sprint Build",
+        "featured": true
+      },
+      {
+        "id": "scale",
+        "marker": "03",
+        "name": "Engagement Scale",
+        "summary": "Partnership ongoing para motores bajo carga.",
+        "price": "custom · retainer mensual",
+        "duration": "3+ meses",
+        "deliverables": [
+          "Roadmap multi-motor (fraude, pricing, routing, etc.)",
+          "Revisión mensual de arquitectura + monitoreo de drift",
+          "Engineer embebido — tu equipo pinguea al nuestro directo",
+          "Cobertura on-call rotation para motores enviados"
+        ],
+        "fitFor": "Tenés motores vivos. Necesitan escalar, evolucionar o multiplicarse.",
+        "cta": "Hablar con nosotros"
+      }
+    ],
+    "antiHeadline": "No somos el encaje correcto si",
+    "antiItems": [
+      "Estás debajo de ~30k EUR — la economía no cierra para ninguna parte",
+      "Querés una workflow tool (Zapier, n8n, Temporal) — existen y son geniales",
+      "Necesitás una interfaz de chat como producto principal — construimos APIs, no chat UIs",
+      "Tu volumen de eventos es < 100k/día y no se espera crecer — overkill para tu escala",
+      "Necesitás un proceso largo de RFP — nos movemos rápido o no nos movemos"
+    ],
+    "footnote": "Los brackets son puntos de partida. Scope real estimado en el call de diagnostic.",
+    "ctaTitle": "¿Listo para scopear?",
+    "ctaBody": "Call de fit de 30 minutos antes de cualquier conversación de precios. Te decimos en la call si vale la pena scopear más."
+  },
+  "Blog": {
+    "metaTitle": "Blog de ingeniería",
+    "metaDescription": "Posts técnicos profundos sobre motores de decisión, arquitectura event-driven y AI en producción del equipo Hiram.",
+    "eyebrow": "BLOG DE INGENIERÍA",
+    "headline": "Notas desde producción.",
+    "lede": "Decisiones de arquitectura, post-mortems y los trade-offs que tomamos. Escrito por los ingenieros que los enviaron.",
+    "empty": "Todavía sin posts.",
+    "back": "← Todos los posts",
+    "minRead": "min lectura",
+    "publishedOn": "Publicado",
+    "byLine": "Por"
+  },
+  "AboutTeam": {
+    "eyebrow": "04 // EQUIPO",
+    "headline": "Los ingenieros que están en las calls.",
+    "lede": "Reemplazá esto con nombres + LinkedIns reales cuando estén. Instrucciones de edición en components/marketing/team-card.tsx.",
+    "editHint": "EDIT THIS",
+    "members": [
+      {
+        "name": "[Nombre fundador]",
+        "role": "Founding engineer · Sistemas de decisión",
+        "bio": "10+ años enviando motores de decisión a producción para telco y fintech. Antes [rol previo].",
+        "links": [{ "label": "LinkedIn", "href": "#" }, { "label": "GitHub", "href": "#" }]
+      },
+      {
+        "name": "[Nombre engineer]",
+        "role": "Engineer · Infraestructura de eventos",
+        "bio": "Kafka + Redpanda + NATS en producción. Antes [rol previo]. Escribe Rust los fines de semana.",
+        "links": [{ "label": "LinkedIn", "href": "#" }, { "label": "GitHub", "href": "#" }]
+      }
+    ]
   },
   "ProblemAnalyzer": {
     "textareaPlaceholder": "Describí un problema de negocio. Cuanto más afilado el input, más afilado el sistema.",

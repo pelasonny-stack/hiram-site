@@ -49,12 +49,14 @@ export function Footer() {
                     label: t("eventInfrastructure"),
                   },
                   { href: "/demo", label: t("interactiveDemo") },
+                  { href: "/pricing", label: t("pricing") },
                 ]}
               />
               <FooterCol
                 title={t("company")}
                 links={[
                   { href: "/case-studies", label: tn("caseStudies") },
+                  { href: "/blog", label: t("blog") },
                   { href: "/about", label: tn("about") },
                   { href: "/contact", label: tn("contact") },
                 ]}
@@ -65,6 +67,14 @@ export function Footer() {
                   {
                     href: "mailto:hello@hiram.systems",
                     label: "hello@hiram.systems",
+                  },
+                  {
+                    href: "https://github.com/pelasonny-stack/hiram-site",
+                    label: t("github"),
+                  },
+                  {
+                    href: "https://github.com/pelasonny-stack/hiram-site/blob/main/LICENSE",
+                    label: t("license"),
                   },
                 ]}
               />

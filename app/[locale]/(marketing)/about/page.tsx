@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Section, Eyebrow } from "@/components/marketing/section";
+import { TeamCard } from "@/components/marketing/team-card";
 
 export async function generateMetadata({
   params,
@@ -31,6 +32,7 @@ export default async function AboutPage({
 
 function AboutContent() {
   const t = useTranslations("About");
+  const tTeam = useTranslations("AboutTeam");
   const tFinal = useTranslations("Home.finalCta");
   const tCommon = useTranslations("Common");
 
@@ -47,6 +49,13 @@ function AboutContent() {
     value: string;
     label: string;
   }[];
+  const teamMembers = tTeam.raw("members") as {
+    name: string;
+    role: string;
+    bio: string;
+    links: { label: string; href: string }[];
+  }[];
+  const editHint = tTeam("editHint");
 
   return (
     <>
@@ -105,6 +114,31 @@ function AboutContent() {
               </p>
             </div>
           ))}
+        </div>
+      </Section>
+
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            <Eyebrow>{tTeam("eyebrow")}</Eyebrow>
+            <h2 className="text-h1 mt-4 max-w-[14ch]">
+              {tTeam("headline")}
+            </h2>
+          </div>
+          <div className="lg:col-span-8">
+            <div className="grid gap-5 md:grid-cols-2">
+              {teamMembers.map((member) => (
+                <TeamCard
+                  key={member.name}
+                  member={member}
+                  editHint={editHint}
+                />
+              ))}
+            </div>
+            <p className="mt-6 font-mono text-xs italic text-foreground-subtle">
+              {tTeam("lede")}
+            </p>
+          </div>
         </div>
       </Section>
 

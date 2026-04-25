@@ -1,0 +1,143 @@
+---
+title: "How we cut p99 decision latency from 480ms to 80ms"
+slug: "p99-decision-latency-rust-onnx"
+publishedAt: "2026-04-12"
+author: "Hiram engineering"
+authorRole: "Decision systems"
+excerpt: "Replacing a legacy rule pack with a hybrid Rust engine + ONNX-exported XGBoost. The architectural decisions, the boring wins, and the parts we'd do differently."
+tags: ["rust", "onnx", "fraud-scoring", "production"]
+minRead: 8
+hero:
+  metricLabel: "p99 latency reduction"
+  metricValue: "480ms → 80ms"
+seo:
+  description: "Architectural deep-dive on a real-time fraud-scoring engine: Rust core, ONNX-exported XGBoost, Kafka consumers, shadow rollout. The trade-offs we made and what we'd change."
+---
+
+This is a write-up of a real engagement, anonymized. Numbers are taken from the production rollout report we delivered to the client. We're publishing the architectural shape, not the code.
+
+## Context
+
+The system we replaced was a Java service that pulled CDRs (call detail records) and recharge events from a relational replica every two minutes, ran them through a hand-tuned rule pack of about 420 conditions, and pushed alerts to a queue. By the time we were brought in, three things had compounded.
+
+The polling cycle meant most fraud was committed and settled before the system noticed. The rule pack had nobody on the current team who'd written the majority of it, and turning rules off had become a political event. And weekend volume — Friday and Saturday evenings ran 4-5x the weekday average — caused the polling job to lag by hours, not minutes.
+
+The constraints we agreed to:
+
+- **p99 budget of 100ms** end-to-end, from event landing on Kafka to a decision being emitted on the output topic.
+- **Regulatory replay**: every decision had to be reproducible byte-for-byte against any historical event, given the rule version and model version. No hidden state.
+- **Two engineers from our side, one client data scientist.** Six weeks. Hard regulator audit deadline at the end.
+- **In-region cloud only.** Event data could not leave the country.
+- **Existing Kafka cluster.** We could consume from it. We could not replace it.
+
+## What we measured first
+
+Before changing anything we spent the first four days instrumenting the existing service. The point was not to optimize the Java path — it was to understand where the time was actually going so we could size the new architecture honestly.
+
+The baseline, measured over a week of production traffic:
+
+- p50: 180ms
+- p99: 480ms
+- p999: 1200ms
+
+The breakdown of where p99 was spent surprised nobody on the team but was useful to have on paper:
+
+- ~55% in feature lookups against the relational replica (joins across three tables, no covering index for the most common access pattern)
+- ~25% in model serving — the model lived behind a Python REST service, so each event paid an HTTP round-trip and a JSON serialize/deserialize on both sides
+- ~12% in the rule evaluator itself, which interpreted the rule pack from a database table on every request
+- ~8% in everything else (Kafka, logging, GC pauses)
+
+Two takeaways drove the architecture. The feature lookup cost was a data layout problem, not a database problem — we'd solve it by moving hot state into a process-local cache backed by Redis. And the REST hop to the model was 100% gratuitous; the model was a tree ensemble that ran in single-digit milliseconds in-process if we got the runtime right.
+
+## The architecture we shipped
+
+The new engine is a single Rust service deployed as a Kafka consumer group. It consumes from two topics (CDRs and recharge events), maintains a per-subscriber state cache in memory (with Redis as the durability layer), runs a deterministic rule layer, then a model layer, and emits a decision.
+
+```
+       Kafka                                           Kafka
+       cdr.v3 ────┐                                  ┌── fraud.decisions.v1
+                  │                                  │
+       recharge.v2┤   ┌──────────────────────────┐   │
+                  ├──▶│  Rust engine             │───┤
+                  │   │  ┌─────────────────────┐ │   │
+                  │   │  │ feature cache       │ │   └── fraud.audit.v1
+                  │   │  │ (DashMap + Redis)   │ │
+                  │   │  ├─────────────────────┤ │
+                  │   │  │ rule evaluator      │ │
+                  │   │  │ (compiled at boot)  │ │
+                  │   │  ├─────────────────────┤ │
+                  │   │  │ ONNX runtime        │ │
+                  │   │  │ (XGBoost, in-proc)  │ │
+                  │   │  └─────────────────────┘ │
+                  │   └──────────────────────────┘
+                  │
+                  └──── ScyllaDB ◀── decision history (async writer)
+```
+
+A typed rule definition looks like this — we ended up at TypeScript-as-DSL after a brief and unhappy detour through YAML:
+
+```ts
+defineRule({
+  id: "R042_VELOCITY_GEO",
+  version: 7,
+  description: "Calls > N in window M from > K km away",
+  inputs: ["calls_5m", "geo_jump_km", "subscriber_age_days"],
+  evaluate: (f) =>
+    f.calls_5m > 12 &&
+    f.geo_jump_km > 350 &&
+    f.subscriber_age_days < 30,
+  emits: { score: 0.85, action: "REVIEW" },
+});
+```
+
+The rules are compiled to a flat evaluator at service startup. About 60 of the original 420 rules survived the migration intact — the rest were either dead, redundant, or moved into model features where they belonged.
+
+The model is an XGBoost ensemble trained offline in Python on six months of labeled history, exported to ONNX, and served in-process via the `tract` ONNX runtime. The feature vector is built by the Rust service from the cached subscriber state and the incoming event. We never go over a network for inference.
+
+Every decision carries the rule ids that fired, the model score, the feature vector hash, the model version, and the rule pack version. That hash is the audit anchor: given a decision, the regulator can replay it against the named rule pack and model and get the same answer.
+
+## The boring wins
+
+This is where most of the latency budget was reclaimed. None of it is novel.
+
+- **In-process model.** No REST hop. ONNX runtime evaluates the tree ensemble in 4-8ms p99 for our feature width (62 features). That alone took ~120ms off p99.
+- **Lock-free feature cache.** Hot subscriber state lives in a `DashMap` keyed by hashed subscriber id, populated lazily from Redis on miss. The cache hit rate stabilized at 94% after the first hour of any deploy. Misses fall back to a single Redis `MGET`.
+- **Batched event consumption with size-and-time triggers.** The consumer pulls up to 256 events or 50ms of wall time, whichever comes first. Inside the batch we still emit per-event decisions, but the I/O amortizes — Kafka commit, Redis writeback, and ScyllaDB inserts go out as batched writes.
+- **Early exit on deterministic rules.** If a hard rule (`BLOCK_LIST_HIT`, `BANNED_IMEI`) fires, we skip the model entirely. Roughly 18% of events take this path in production, and they exit at sub-2ms.
+- **Decision history is async.** Writes to ScyllaDB are non-blocking with bounded backpressure; if the writer falls behind, we apply backpressure to the consumer rather than blocking the decision path. We've never exercised the backpressure in production, but we tested it with a fault injector.
+
+## What we ran in shadow
+
+Two weeks of dual-write before any traffic flipped. The new engine consumed the live event stream and wrote its decisions to a parallel topic that no downstream system acted on. The legacy engine remained the system of record.
+
+Every night a job in ClickHouse compared the two decision streams, broken out by rule, by fraud class, by subscriber cohort, and by hour. We chased every disagreement. Most of them were noise — the legacy engine's polling cadence meant the same event got slightly different feature values when the new engine saw it in real time vs. when the old one saw it two minutes later. Those reconciled cleanly once we accounted for the timestamp drift.
+
+One cohort broke. Subscribers on a specific MVNO partner showed a sustained 4% disagreement rate that didn't reconcile with timing. We traced it to a billing-side enum that the upstream team had silently extended a year earlier — the legacy engine treated the unknown enum as `OTHER`, the new engine treated it as a schema violation and fell back to a default that scored slightly higher. We added an explicit handler, regenerated the diff for the prior week, and the cohort cleared.
+
+After two weeks of shadow we ran two more weeks of canary at 5%, then 25%, then 100%. The fallback was a feature flag flip back to the legacy engine; we tested it twice during low-traffic windows and never had to use it for real.
+
+## Numbers
+
+End of week six, measured over the first 30 days post-rollout against the same cohorts as the baseline:
+
+| Metric | Before | After |
+| --- | --- | --- |
+| p50 decision latency | 180ms | 12ms |
+| p99 decision latency | 480ms | 80ms |
+| p999 decision latency | 1200ms | 240ms |
+| False-positive rate (high-cost classes) | baseline | -23% |
+| Recall (high-cost classes) | baseline | -1.5pp |
+| Events processed in shadow | — | 4.2B |
+| Rule-version rollbacks since promotion | — | 0 |
+
+The recall drop is honest. We could have kept the legacy engine's recall by lowering the model threshold, but the false-positive cost would have come back with it. The fraud team chose the trade.
+
+The number we cared about most internally was the rule-version rollback count. Zero rollbacks across nine rule-pack revisions and four model versions in the first six months. Shadow-mode caught everything that would have caused one.
+
+## What we'd do differently
+
+The thing we underestimated was historical replay. The audit requirement said every decision had to be replayable, and we built that for forward-going decisions cleanly. But replaying a year of historical events through the new engine — to demonstrate to the regulator that the new engine wouldn't have made decisions the old one wouldn't — required reconstructing the feature state at every historical timestamp, which we hadn't designed for from day one. We spent two weeks of the rollout window building a replay harness that should have been week-one infrastructure.
+
+We'd also invest in feature observability earlier. We had per-rule metrics from the start — easy, and the obvious thing — but per-feature distributions and drift detection got added in week five, after we'd already shipped the engine and discovered we were flying blind on whether the input distribution had moved since training. Next time, the feature monitoring goes in before the rule monitoring.
+
+And finally: we started the rule layer in YAML and converted to TypeScript-as-DSL in week three. The YAML version was faster to write but the type system on the inputs paid for itself the moment the data scientist and the engineers needed to coordinate on what `subscriber_age_days` actually meant when the subscriber was a port-in. We'd start typed next time and not look back.

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Section, Eyebrow } from "@/components/marketing/section";
 import { ProblemAnalyzer } from "@/components/ai/problem-analyzer";
 import { RecentQueriesRail } from "@/components/ai/recent-queries-rail";
+import { DemoFunnelCta } from "@/components/ai/demo-funnel-cta";
 import {
   RequestTracePanel,
   initialTrace,
@@ -16,9 +17,19 @@ export function DemoPageClient() {
   const [seed, setSeed] = React.useState<string | undefined>(undefined);
   const [, setProblem] = React.useState("");
   const [trace, setTrace] = React.useState<TraceState>(initialTrace);
+  const [showCta, setShowCta] = React.useState(false);
 
   const onPick = React.useCallback((prompt: string) => {
     setSeed(prompt);
+  }, []);
+
+  const onTraceChange = React.useCallback((next: TraceState) => {
+    setTrace(next);
+    if (next.status === "done") {
+      setShowCta(true);
+    } else if (next.status === "streaming") {
+      setShowCta(false);
+    }
   }, []);
 
   return (
@@ -39,8 +50,9 @@ export function DemoPageClient() {
             enableInspect
             seed={seed}
             onProblemChange={setProblem}
-            onTraceChange={setTrace}
+            onTraceChange={onTraceChange}
           />
+          <DemoFunnelCta visible={showCta} className="mt-8" />
         </div>
         <div className="order-2 lg:order-3 lg:col-span-3">
           <RequestTracePanel trace={trace} />

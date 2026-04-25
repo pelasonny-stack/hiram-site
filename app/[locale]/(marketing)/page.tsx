@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Section, Eyebrow } from "@/components/marketing/section";
+import { TrustLogos } from "@/components/marketing/trust-logos";
 import {
   TelemetryStrip,
   type TelemetryItem,
@@ -21,6 +22,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <TrustLogos />
       <WhatWeDo />
       <Proof />
       <Demo />
